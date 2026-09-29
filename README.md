@@ -41,9 +41,9 @@ Los 8 modelos principales fueron creados por el equipo en Blender:
 | 1 | **Tumba** | Base de piedra con lápida en la cabecera. Es el soporte de la ofrenda y da el contexto del cementerio. | ⬜ Pendiente de subir |
 | 2 | **Niveles de la ofrenda** | Escalones cubiertos con mantel que organizan los elementos; cada nivel tiene un significado simbólico. | ⬜ Pendiente de subir |
 | 3 | **Veladora** | La luz que guía a las almas en su camino. En la escena final será la principal fuente de luz dinámica. | ⬜ Pendiente de subir |
-| 4 | **Calaverita de azúcar** | Dulce tradicional que representa a los difuntos; suele llevar el nombre de la persona recordada. | ✅ `calaverita_base.blend` |
+| 4 | **Calaverita de azúcar** | Dulce tradicional que representa a los difuntos; suele llevar el nombre de la persona recordada. | ⬜ Pendiente de subir |
 | 5 | **Pan de muerto** | Pan dulce con "huesitos" cruzados y una bolita al centro que representa el cráneo. | ⬜ Pendiente de subir |
-| 6 | **Flores de cempasúchil** | La flor emblemática del Día de Muertos; su color y aroma marcan el camino de regreso de los difuntos. | ✅ `cempasuchil_base.blend` |
+| 6 | **Flores de cempasúchil** | La flor emblemática del Día de Muertos; su color y aroma marcan el camino de regreso de los difuntos. | ⬜ Pendiente de subir |
 | 7 | **Portarretratos** | Marcos con las fotografías de los seres queridos a quienes se dedica la ofrenda. | ⬜ Pendiente de subir |
 | 8 | **Copalero** | Sahumerio de barro donde se quema el copal; su humo purifica el espacio y guía a las almas. | ⬜ Pendiente de subir |
 
