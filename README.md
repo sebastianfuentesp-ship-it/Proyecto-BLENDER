@@ -49,6 +49,24 @@ Los 8 modelos principales fueron creados por el equipo en Blender:
 
 > Actualiza la columna *Estado* al subir cada modelo.
 
+## 🖼️ Texturas
+
+Cada modelo usa materiales sencillos pensados para cargarse en OpenGL: un *Principled BSDF* con una sola imagen conectada a *Base Color* (sin nodos procedurales). Las imágenes están en `Texturas/<modelo>/` y los `.blend` las referencian con rutas relativas, así que hay que conservar la misma estructura de carpetas.
+
+Las UV usan proyección de caja en metros reales, por lo que algunas texturas se repiten (tileables): en OpenGL configura las texturas con `GL_REPEAT`.
+
+| Modelo | Carpeta de texturas |
+|---|---|
+| Escenario reja del cementerio | `Texturas/escenario_reja_cementerio/` |
+| Capilla | `Texturas/capilla/` |
+| Ángel del dolor | `Texturas/angel_dolor/` |
+| Árbol del panteón | `Texturas/arbol_panteon/` |
+| Catrina | `Texturas/catrina/` |
+| Platillos del altar | `Texturas/platillos_altar/` |
+| Portarretratos | `Texturas/portarretratos/` (`foto_retrato.png` es un retrato genérico; cámbialo por la foto que quieran) |
+| Cempasúchil | `Texturas/cempasuchil/` |
+| Calaverita | `Texturas/calaverita/` |
+
 ## 🛠️ Requisitos
 
 - [Blender](https://www.blender.org/download/) 5.2 LTS (versión con la que se crearon los modelos).
