@@ -62,5 +62,12 @@ Estos son los modelos texturizados que carga `src/main.cpp`. Dónde va cada uno 
 | `florero/florero.obj` | Yasser | 6,219 | abajo al centro | talavera, pétalo, centro, tallo, hoja |
 | `angelito/angelito.obj` | Yasser | 12,120 | abajo al centro | mármol blanco, piedra del pedestal |
 | `cruz_tumba/cruz_tumba.obj` | Yasser | 36 | abajo al centro | cantera |
+| `ofrenda/ofrenda.obj` | Yasser | 6,828 | abajo al centro | manteles rosas, papel picado, madera, barro, calabaza, naranja, porcelana, caña, pétalos con transparencia |
+| `corona_flores/`, `corona_corazon/`, `corona_cruz/`, `corona_blanca/` | Yasser | 340 a 1,724 | abajo al centro | flores, listón, madera del tripié |
+| `tapete_cruz/`, `tapete_corazon/`, `tapete_sol/`, `tapete_franjas/` | Yasser | 12 | abajo al centro | un diseño de tapete cada uno |
+| `mausoleo/mausoleo.obj` | Yasser | 116 | abajo al centro | cantera, herrería, teja |
+| `tumba_tierra/tumba_tierra.obj` | Yasser | 102 | abajo al centro | tierra, cal, madera |
+| `tumba_azulejo/tumba_azulejo.obj` | Yasser | 108 | abajo al centro | azulejo, mármol, cal |
+| `persona_mujer/` a `persona_mujer5/`, `persona_hombre/`, `persona_hombre2/`, `persona_rodillas/` | Yasser | 624 a 764 | abajo al centro | piel, cabello, rebozo, falda, camisa, pantalón, sombrero |
 
 El pan de muerto se exporta sin los cristales de azúcar de Geometry Nodes (eran 27 mil instancias, más de 5 millones de triángulos); el azúcar queda en la textura. El copalero se exporta con *Decimate* al 20 %.

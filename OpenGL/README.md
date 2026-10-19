@@ -31,7 +31,7 @@ Si cambian un modelo en Blender, vuelvan a exportarlo a `assets/models/<modelo>/
 
 Dos técnicas:
 
-- **Phong** con tres tipos de luz: la luna (direccional), las velas (puntuales, con parpadeo) y una linterna en la cámara (spotlight). Hay 220 velas en la escena; en cada cuadro se mandan al shader las 24 más cercanas a la cámara.
+- **Phong** con tres tipos de luz: la luna (direccional), las velas (puntuales, con parpadeo) y una linterna en la cámara (spotlight). Hay 459 velas en la escena; en cada cuadro se mandan al shader las 24 más cercanas a la cámara.
 - **Fresnel** (aproximación de Schlick): brillo azulado de la luna en los bordes de los objetos.
 
 Además, niebla densa exponencial que se concentra cerca del suelo y se funde con el horizonte del skybox. Las flamas de las velas se dibujan sin iluminación (shader `lamp`) y se estiran con el parpadeo. El papel picado usa la transparencia de su textura (`discard` en `lighting.frag`; `Model.h` carga las texturas en RGBA). Las tumbas se pintan con el uniform `tinte`, que multiplica el color de la textura con el color que trae cada línea del layout.

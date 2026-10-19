@@ -91,7 +91,12 @@ Están en `Modelos/Yasser/` y `Modelos/Yasser/modelos_cargados/`, todos texturiz
 | Tapete de flores | `extras.blend` | Tapete de pétalos con una calavera, frente al altar y en algunas tumbas (9) |
 | Florero de talavera | `florero.blend` | Florero con un ramo de cempasúchil, en las tumbas (35) |
 | Angelito | `angelito.blend` | Estatua chica de ángel sobre pedestal, en tumbas y sueltos (12) |
-| Cruz de piedra | `cruz_tumba.blend` | Tumbas sencillas con cruz (6) |
+| Cruz de piedra | `cruz_tumba.blend` | Tumbas sencillas con cruz (12) |
+| Ofrenda tradicional | `ofrenda.blend` | El altar de muertos de la escena: tres niveles con manteles rosas y papel picado, cajas de madera, banca, huacal con naranjas, macetas, calabazas, jarritos, caña y pétalos en el piso |
+| Coronas de flores | `corona_flores.blend`, `corona_corazon.blend`, `corona_cruz.blend`, `corona_blanca.blend` | Coronas en tripié junto a las tumbas (redonda, de corazón, en cruz y blanca con listón) |
+| Tapetes de flores | `tapete_cruz.blend`, `tapete_corazon.blend`, `tapete_sol.blend`, `tapete_franjas.blend` | Cuatro diseños más de tapete, en el camino y en las tumbas |
+| Tumbas nuevas | `mausoleo.blend`, `tumba_tierra.blend`, `tumba_azulejo.blend` | Mausoleo familiar con techo de teja, tumba de tierra con cruz de madera y tumba de azulejo con lápida |
+| Personas | `persona_mujer.blend` a `persona_mujer5.blend`, `persona_hombre.blend`, `persona_hombre2.blend`, `persona_rodillas.blend` | Familias que visitan las tumbas: mujeres con rebozo, hombres con sombrero o chamarra y mujeres hincadas rezando |
 
 ## Texturas
 
@@ -114,7 +119,10 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 | Tumba | `Texturas/tumba/` |
 | Pan de muerto | `Texturas/pan_de_muerto/` |
 | Terrazas | `Texturas/terrazas/` |
-| Tapete de flores, florero y cruz | `Texturas/extras/` |
+| Tapetes de flores, florero y cruz | `Texturas/extras/` |
+| Ofrenda y coronas | `Texturas/ofrenda/` (el papel picado usa `Texturas/papel_picado/`) |
+| Mausoleo, tumba de tierra y de azulejo | `Texturas/tumbas_extra/` |
+| Personas | `Texturas/personas/` |
 | Papel picado | `Texturas/Decoración/` (originales) y `Texturas/papel_picado/` (recortadas para OpenGL, con transparencia) |
 | Skybox | `Texturas/skybox/` (6 caras: right, left, top, bottom, front, back) |
 
@@ -128,9 +136,9 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 
 ## Escena
 
-La escena tiene unas 1,500 instancias. El terreno sube en dos terrazas de tierra a cada lado del camino, como en los panteones de México, con escaleras entre niveles. Hay 27 tumbas, 6 cruces de piedra y 5 ángeles en filas; las tumbas están pintadas de distintos colores y cada familia las arregla diferente: unas muy adornadas (guirnalda, florero, tapete de flores, angelito, arco de flores y muchas velas), otras más sencillas y algunas casi abandonadas.
+La escena tiene unas 2,000 instancias. El terreno sube en dos terrazas de tierra a cada lado del camino, como en los panteones de México, con escaleras entre niveles. Hay 40 tumbas de cinco tipos (tumba de cantera, tumba de azulejo, tumba de tierra, mausoleo y cruz de piedra) y 4 ángeles en filas; las tumbas están pintadas de distintos colores y cada familia las arregla diferente: unas muy adornadas (guirnalda, florero, tapete de flores, corona, angelito, arco de flores y muchas velas), otras más sencillas y algunas casi abandonadas. 126 personas visitan el panteón: familias paradas o hincadas frente a sus tumbas, gente viendo el altar y caminando por el camino.
 
-El altar de muertos está al final del camino, frente a la capilla, con platillos, velas, copal, calaveritas, retratos y un tapete de flores al frente. El camino de cempasúchil es denso (943 flores), con 220 velas de colores por todo el panteón, 98 guirnaldas (en las tumbas, el altar, la capilla y los muros de las terrazas), 23 tiras de papel picado (sobre el camino, la entrada, el altar y los pasillos), una catrina gigante de unos 6 m junto a la entrada, otra junto al altar, 84 árboles alrededor de la barda y niebla densa.
+El altar de muertos está al final del camino, frente a la capilla, al estilo de una ofrenda tradicional: tres niveles con manteles rosas y papel picado, cajas de madera a los lados, una banca con los platillos, un huacal con naranjas, macetas de cempasúchil, floreros con flores rosas, calabazas, jarritos, caña, pan de muerto, calaveritas, retratos, velas y copal, con pétalos regados y un camino de flores naranjas y rosas en el piso. El camino de cempasúchil es denso (más de 1,000 flores), con 459 velas por todo el panteón (en las tumbas, el altar, el camino y las orillas de las terrazas), tres tapetes de flores sobre el camino, 100 guirnaldas, 21 tiras de papel picado (sobre el camino, la entrada, detrás del altar y en los pasillos), una catrina gigante de unos 6 m junto a la entrada, otra junto al altar, 84 árboles alrededor de la barda y niebla densa.
 
 Las capturas de la escena están en `Escena/preview_*.png`.
 
