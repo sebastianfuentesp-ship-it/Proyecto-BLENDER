@@ -27,10 +27,11 @@ Este repositorio contiene los **modelos 3D hechos en Blender**, sus texturas, lo
 | Parte | Estado |
 |---|---|
 | Modelos de Yasser (texturizados) | Listo |
-| Modelos de Cristian, Melissa y Sebastian | Pendiente de subir |
+| Modelos de Melissa (altar, vela y copalero) y de Sebastian (tumba, pan de muerto y papel picado) | Listo, texturizados y en la escena |
+| Modelos de Cristian | Pendiente de subir |
 | Skybox nocturno (`Texturas/skybox/`) | Listo |
 | Shaders de skybox, niebla y luz de luna (`Shaders/`) | Listo |
-| Acomodo de la escena (`Escena/`) | Listo, se ajustará al llegar los demás modelos |
+| Acomodo de la escena (`Escena/`) | Listo con los modelos de todo el equipo |
 | Carga de modelos y texturas en OpenGL (`OpenGL/`) | Listo |
 | Iluminación: Phong y Fresnel, luces que se prenden y apagan con el teclado | Listo, entrega del 27 de octubre |
 | Animaciones (por código, por keyframes y por input) | Pendiente |
@@ -51,16 +52,25 @@ Proyecto-BLENDER/
 
 | # | Modelo | Descripción | Estado |
 |---|---|---|---|
-| 1 | **Tumba** | Base de piedra con lápida en la cabecera. Es el soporte de la ofrenda y da el contexto del cementerio. | Pendiente de subir |
-| 2 | **Niveles de la ofrenda** | Escalones cubiertos con mantel que organizan los elementos; cada nivel tiene un significado simbólico. | Pendiente de subir |
-| 3 | **Veladora** | La luz que guía a las almas en su camino. En la escena final será la principal fuente de luz dinámica. | Pendiente de subir |
+| 1 | **Tumba** | Base de piedra con lápida en la cabecera. Es el soporte de la ofrenda y da el contexto del cementerio. | Subido y texturizado (Sebastian) |
+| 2 | **Niveles de la ofrenda** | Escalones cubiertos con mantel que organizan los elementos; cada nivel tiene un significado simbólico. | Subido y texturizado (Melissa) |
+| 3 | **Veladora** | La luz que guía a las almas en su camino. En la escena es la principal fuente de luz dinámica. | Subido y texturizado (Melissa) |
 | 4 | **Calaverita de azúcar** | Dulce tradicional que representa a los difuntos; suele llevar el nombre de la persona recordada. | Subido y texturizado |
-| 5 | **Pan de muerto** | Pan dulce con "huesitos" cruzados y una bolita al centro que representa el cráneo. | Pendiente de subir |
+| 5 | **Pan de muerto** | Pan dulce con "huesitos" cruzados y una bolita al centro que representa el cráneo. | Subido y texturizado (Sebastian) |
 | 6 | **Flores de cempasúchil** | La flor emblemática del Día de Muertos; su color y aroma marcan el camino de regreso de los difuntos. | Subido y texturizado |
 | 7 | **Portarretratos** | Marcos con las fotografías de los seres queridos a quienes se dedica la ofrenda. | Subido y texturizado |
-| 8 | **Copalero** | Sahumerio de barro donde se quema el copal; su humo purifica el espacio y guía a las almas. | Pendiente de subir |
+| 8 | **Copalero** | Sahumerio de barro donde se quema el copal; su humo purifica el espacio y guía a las almas. | Subido y texturizado (Melissa) |
+| 9 | **Papel picado** | Banderitas de papel recortado con figuras tradicionales que adornan el panteón. | Subido con sus texturas (Sebastian) |
 
 > Actualiza la columna *Estado* al subir cada modelo.
+
+Archivos de los modelos del equipo:
+
+| Archivo | Contenido |
+|---|---|
+| `Modelos/Melissa/altar_con_flamas.blend` | Altar de tres niveles, velas con flama y copalero, en un solo archivo |
+| `Modelos/Sebastian/Modelos.blend` | Tumba y pan de muerto, en un solo archivo |
+| `Modelos/Sebastian/Decoracion.blend` | Papel picado (texturas en `Texturas/Decoración/`) |
 
 ## Modelos de ambientación
 
@@ -70,11 +80,12 @@ Están en `Modelos/Yasser/` y `Modelos/Yasser/modelos_cargados/`, todos texturiz
 |---|---|---|
 | Escenario con reja | `modelos_cargados/escenario_reja_cementerio.blend` | Suelo, barda, reja de entrada y camino |
 | Capilla | `modelos_cargados/capilla.blend` | Al fondo del camino |
-| Ángel del dolor | `modelos_cargados/angel_dolor.blend` | Tumbas, repetido 12 veces |
-| Árbol del panteón | `modelos_cargados/arbol_panteon.blend` | 9 árboles, adentro y afuera de la barda |
+| Ángel del dolor | `modelos_cargados/angel_dolor.blend` | 5 tumbas, entre las tumbas de Sebastian |
+| Árbol del panteón | `modelos_cargados/arbol_panteon.blend` | 84 árboles, casi todos alrededor de la barda |
 | Catrina | `modelos_cargados/catrina.blend` | 2 catrinas |
-| Platillos del altar | `modelos_cargados/platillos_altar.blend` | Ofrenda principal |
-| Flor de cempasúchil | `flor_cempasuchil.blend` | Una sola flor, repetida 374 veces |
+| Platillos del altar | `modelos_cargados/platillos_altar.blend` | En el nivel de arriba del altar de muertos |
+| Flor de cempasúchil | `flor_cempasuchil.blend` | Una sola flor, repetida 453 veces |
+| Guirnalda de cempasúchil | `cempasuchil.blend` (cadenas de flores) | Sobre cada tumba y en el altar |
 | Pétalos del camino | `petalos_camino.blend` | Pétalos sobre el camino |
 
 ## Texturas
@@ -94,6 +105,10 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 | Portarretratos | `Texturas/portarretratos/` (`foto_retrato.png` es un retrato genérico; cámbialo por la foto que quieran) |
 | Cempasúchil | `Texturas/cempasuchil/` |
 | Calaverita | `Texturas/calaverita/` |
+| Altar, velas y copalero | `Texturas/altar_con_flamas/` |
+| Tumba | `Texturas/tumba/` |
+| Pan de muerto | `Texturas/pan_de_muerto/` |
+| Papel picado | `Texturas/Decoración/` (originales) y `Texturas/papel_picado/` (recortadas para OpenGL, con transparencia) |
 | Skybox | `Texturas/skybox/` (6 caras: right, left, top, bottom, front, back) |
 
 ## Shaders
@@ -105,6 +120,8 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 | `niebla.glsl` | Función `aplicaNiebla()` que oscurece con la distancia y se concentra cerca del suelo |
 
 ## Escena
+
+La escena tiene unas 900 instancias: 35 tumbas y 5 ángeles en filas a los lados del camino, cada tumba con su guirnalda, velas, flores y a veces pan de muerto, calaverita, portarretrato o copal; el altar de muertos al final del camino, frente a la capilla, con los platillos, velas, copal, calaveritas y retratos; 186 velas por todo el panteón; tiras de papel picado sobre el camino y los pasillos; 84 árboles alrededor de la barda y niebla densa.
 
 `Escena/escena_layout.txt` tiene una línea por objeto (`modelo x y z rotY escala`, en coordenadas de OpenGL). Cada modelo se carga una vez y se dibuja en cada posición cambiando su matriz `model`. `Escena/escena_preview.blend` muestra la escena armada en Blender, solo como referencia. El código para leer el archivo, montar el skybox y configurar la niebla está en [`Escena/README.md`](Escena/README.md). El proyecto de Visual Studio que arma la escena completa está en [`OpenGL/`](OpenGL/README.md).
 

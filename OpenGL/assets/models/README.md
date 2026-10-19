@@ -35,27 +35,25 @@ Las rutas de las texturas dentro del `.mtl` son solo el nombre del archivo, así
 
 Estos son los modelos texturizados que carga `src/main.cpp`. Dónde va cada uno (posición, giro y escala) se define en `assets/escena_layout.txt`.
 
-| Archivo | Triángulos | Pivote | Texturas |
-|---|---|---|---|
-| `escenario/escenario.obj` | 29,054 | origen de la escena | pasto, tierra del camino, piedra de la cerca, hierro forjado, hiedra |
-| `capilla/capilla.obj` | 4,172 | abajo al centro | cantera, hierro |
-| `angel_dolor/angel_dolor.obj` | 134,866 | abajo al centro | mármol blanco, piedra del monumento |
-| `arbol_panteon/arbol_panteon.obj` | 9,483 | abajo al centro | corteza, follaje |
-| `catrina/catrina.obj` | 192,287 | abajo al centro | hueso, vestido, sombrero, plumas, pulsera, base |
-| `platillos_altar/platillos_altar.obj` | 126,852 | abajo | platillos y dulces del altar |
-| `portarretratos/portarretratos.obj` | 172 | abajo al centro | marco y foto |
-| `calaverita/calaverita.obj` | 16,396 | abajo al centro | azúcar blanca, betún de colores |
-| `flor_cempasuchil/flor_cempasuchil.obj` | 4,838 | abajo al centro | pétalo, centro, tallo, hoja |
-| `petalos_camino/petalos_camino.obj` | 79,712 | origen de la escena | pétalo de cempasúchil |
+| Archivo | De quién | Triángulos | Pivote | Texturas |
+|---|---|---|---|---|
+| `escenario/escenario.obj` | Yasser | 29,054 | origen de la escena | pasto, tierra del camino, piedra de la cerca, hierro forjado, hiedra |
+| `capilla/capilla.obj` | Yasser | 4,172 | abajo al centro | cantera, hierro |
+| `angel_dolor/angel_dolor.obj` | Yasser | 134,866 | abajo al centro | mármol blanco, piedra del monumento |
+| `arbol_panteon/arbol_panteon.obj` | Yasser | 9,483 | abajo al centro | corteza, follaje |
+| `catrina/catrina.obj` | Yasser | 192,287 | abajo al centro | hueso, vestido, sombrero, plumas, pulsera, base |
+| `platillos_altar/platillos_altar.obj` | Yasser | 126,852 | abajo | platillos y dulces del altar |
+| `portarretratos/portarretratos.obj` | Yasser | 172 | abajo al centro | marco y foto |
+| `calaverita/calaverita.obj` | Yasser | 16,396 | abajo al centro | azúcar blanca, betún de colores |
+| `flor_cempasuchil/flor_cempasuchil.obj` | Yasser | 4,838 | abajo al centro | pétalo, centro, tallo, hoja |
+| `petalos_camino/petalos_camino.obj` | Yasser | 79,712 | origen de la escena | pétalo de cempasúchil |
+| `guirnalda/guirnalda.obj` | Yasser | 10,720 | arriba al centro | pétalo y centro de cempasúchil |
+| `altar/altar.obj` | Melissa | 36 | abajo al centro | mantel morado |
+| `vela/vela.obj` | Melissa | 328 | abajo al centro | cera, mecha |
+| `flama/flama.obj` | Melissa | 1,248 | el mismo de la vela | flama (se dibuja con el shader `lamp`) |
+| `copalero/copalero.obj` | Melissa | 12,344 | abajo al centro | barro, copal |
+| `tumba/tumba.obj` | Sebastian | 5,652 | abajo al centro | cantera, mármol de la lápida, granito del nicho |
+| `pan_de_muerto/pan_de_muerto.obj` | Sebastian | 6,460 | abajo al centro | pan, azúcar |
+| `papel_picado/papel_picado.obj` | Sebastian | 382 | abajo al centro (entre los postes) | 6 diseños de papel picado con transparencia, postes, cordel |
 
-## Modelos anteriores (sin texturas)
-
-| Archivo | Triángulos | Pivote |
-|---|---|---|
-| `cempasuchil/cempasuchil.obj` | 4,838 | abajo al centro |
-| `flor_suelta/flor_suelta.obj` | 268 | abajo al centro |
-| `cadena_cempasuchil/cadena_colgada_1.obj` | 4,824 | arriba al centro |
-| `cadena_cempasuchil/cadena_colgada_2.obj` | 4,824 | arriba al centro |
-| `cadena_cempasuchil/cadena_tira_1.obj` | 3,484 | arriba al centro |
-| `cadena_cempasuchil/cadena_tira_2.obj` | 2,412 | arriba al centro |
-| `cadena_cempasuchil/cadena_tira_3.obj` | 3,484 | arriba al centro |
+El pan de muerto se exporta sin los cristales de azúcar de Geometry Nodes (eran 27 mil instancias, más de 5 millones de triángulos); el azúcar queda en la textura. El copalero se exporta con *Decimate* al 20 %.

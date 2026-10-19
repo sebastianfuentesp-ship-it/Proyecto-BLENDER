@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <algorithm>
 
 // GLEW
 #include <GL/glew.h>
@@ -47,7 +48,7 @@ bool firstMouse = true;
 
 // Interacciones con las luces
 bool linternaOn = false;     // F: linterna (spotlight en la camara)
-bool veladorasOn = true;     // V: veladoras (luces puntuales)
+bool veladorasOn = true;     // V: velas (luces puntuales)
 bool fresnelOn = true;       // R: brillo de luna en los bordes (Fresnel)
 bool nieblaOn = true;        // N: niebla
 float lunaIntensidad = 1.0f; // + / -: intensidad de la luna
@@ -61,10 +62,14 @@ struct Instancia
 	float escala;
 };
 
-const int NUM_VELADORAS = 12;
-glm::vec3 veladoras[NUM_VELADORAS];
+// Velas: cada instancia de "vela" del layout lleva su flama y es una luz puntual candidata.
+// El shader recibe solo las MAX_LUCES velas mas cercanas a la camara.
+const int MAX_LUCES = 24;
+const float FLAMA_BASE = 0.30f;   // altura donde empieza la flama en el modelo de la vela
+std::vector<glm::mat4> velas;     // matriz de modelo de cada vela
+std::vector<glm::vec3> luzVela;   // posicion de cada flama en el mundo
 
-// Cubo para las flamas de las veladoras y para el skybox
+// Cubo para el skybox
 float vertices[] = {
 	-0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f,  0.5f, -0.5f,
 	 0.5f,  0.5f, -0.5f,  -0.5f,  0.5f, -0.5f,  -0.5f, -0.5f, -0.5f,
@@ -81,7 +86,7 @@ float vertices[] = {
 };
 
 // Niebla y cielo
-const glm::vec3 FOG_COLOR(0.29f, 0.26f, 0.35f);
+const glm::vec3 FOG_COLOR(0.33f, 0.31f, 0.39f);
 
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
@@ -114,7 +119,17 @@ std::vector<Instancia> CargaLayout(const std::string &ruta)
 	return v;
 }
 
-// Parpadeo de la flama: suma de senos con fases distintas para cada veladora
+// Matriz de modelo de una instancia: T * Ry * S
+glm::mat4 MatrizModelo(const Instancia &i)
+{
+	glm::mat4 model(1);
+	model = glm::translate(model, i.pos);
+	model = glm::rotate(model, glm::radians(i.rotY), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(i.escala));
+	return model;
+}
+
+// Parpadeo de la flama: suma de senos con fases distintas para cada vela
 float Parpadeo(int i, float t)
 {
 	return 0.80f + 0.12f * sin(t * 7.3f + i * 1.7f) + 0.08f * sin(t * 13.1f + i * 4.1f);
@@ -182,18 +197,22 @@ int main()
 		}
 	}
 
-	// Veladoras: una al frente de cada tumba (angel_dolor), del lado del camino
-	int nv = 0;
+	// Flama de las velas: se dibuja sin iluminacion con el shader de lampara
+	Model flama((char*)"assets/models/flama/flama.obj");
+
 	for (auto &i : layout)
 	{
-		if (i.modelo == "angel_dolor" && nv < NUM_VELADORAS)
+		if (i.modelo == "vela")
 		{
-			float lado = (i.pos.x < 0.0f) ? 1.2f : -1.2f;
-			veladoras[nv++] = glm::vec3(i.pos.x + lado, 0.35f, i.pos.z);
+			glm::mat4 m = MatrizModelo(i);
+			velas.push_back(m);
+			luzVela.push_back(glm::vec3(m * glm::vec4(0.0f, FLAMA_BASE + 0.03f, 0.0f, 1.0f)));
 		}
 	}
+	std::cout << velas.size() << " velas en la escena" << std::endl;
+	std::vector<int> orden(luzVela.size());
 
-	// VAO del cubo (flamas y skybox)
+	// VAO del cubo (skybox)
 	GLuint VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -253,19 +272,32 @@ int main()
 		glUniform3f(glGetUniformLocation(prog, "dirLight.diffuse"), luna.x, luna.y, luna.z);
 		glUniform3f(glGetUniformLocation(prog, "dirLight.specular"), 0.15f * lunaIntensidad, 0.15f * lunaIntensidad, 0.2f * lunaIntensidad);
 
-		// Point lights: veladoras con luz calida que parpadea
-		for (int i = 0; i < NUM_VELADORAS; i++)
+		// Point lights: las velas mas cercanas a la camara, con luz calida que parpadea
+		for (int i = 0; i < (int)orden.size(); i++)
+		{
+			orden[i] = i;
+		}
+		int nLuces = std::min(MAX_LUCES, (int)orden.size());
+		glm::vec3 cam = camera.GetPosition();
+		std::partial_sort(orden.begin(), orden.begin() + nLuces, orden.end(), [&](int a, int b)
+		{
+			return glm::length(luzVela[a] - cam) < glm::length(luzVela[b] - cam);
+		});
+
+		for (int i = 0; i < MAX_LUCES; i++)
 		{
 			std::string base = "pointLights[" + std::to_string(i) + "].";
-			float k = veladorasOn ? Parpadeo(i, currentFrame) : 0.0f;
+			int v = (i < nLuces) ? orden[i] : 0;
+			float k = (veladorasOn && i < nLuces) ? Parpadeo(v, currentFrame) : 0.0f;
 			glm::vec3 c = glm::vec3(1.0f, 0.55f, 0.2f) * k;
-			glUniform3f(glGetUniformLocation(prog, (base + "position").c_str()), veladoras[i].x, veladoras[i].y, veladoras[i].z);
+			glm::vec3 p = (i < nLuces) ? luzVela[v] : glm::vec3(0.0f);
+			glUniform3f(glGetUniformLocation(prog, (base + "position").c_str()), p.x, p.y, p.z);
 			glUniform3f(glGetUniformLocation(prog, (base + "ambient").c_str()), c.x * 0.05f, c.y * 0.05f, c.z * 0.05f);
 			glUniform3f(glGetUniformLocation(prog, (base + "diffuse").c_str()), c.x, c.y, c.z);
 			glUniform3f(glGetUniformLocation(prog, (base + "specular").c_str()), c.x * 0.3f, c.y * 0.3f, c.z * 0.3f);
 			glUniform1f(glGetUniformLocation(prog, (base + "constant").c_str()), 1.0f);
-			glUniform1f(glGetUniformLocation(prog, (base + "linear").c_str()), 0.35f);
-			glUniform1f(glGetUniformLocation(prog, (base + "quadratic").c_str()), 0.44f);
+			glUniform1f(glGetUniformLocation(prog, (base + "linear").c_str()), 0.7f);
+			glUniform1f(glGetUniformLocation(prog, (base + "quadratic").c_str()), 1.8f);
 		}
 
 		// SpotLight: linterna en la camara
@@ -289,8 +321,8 @@ int main()
 		// Niebla
 		glUniform1i(glGetUniformLocation(prog, "fogOn"), nieblaOn ? 1 : 0);
 		glUniform3f(glGetUniformLocation(prog, "fogColor"), FOG_COLOR.x, FOG_COLOR.y, FOG_COLOR.z);
-		glUniform1f(glGetUniformLocation(prog, "fogDensity"), 0.045f);
-		glUniform1f(glGetUniformLocation(prog, "fogHeight"), 2.0f);
+		glUniform1f(glGetUniformLocation(prog, "fogDensity"), 0.085f);
+		glUniform1f(glGetUniformLocation(prog, "fogHeight"), 3.0f);
 
 		// Create camera transformations
 		glm::mat4 view = camera.GetViewMatrix();
@@ -307,32 +339,30 @@ int main()
 		// Dibuja cada instancia del layout: model = T * Ry * S
 		for (auto &i : layout)
 		{
-			glm::mat4 model(1);
-			model = glm::translate(model, i.pos);
-			model = glm::rotate(model, glm::radians(i.rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-			model = glm::scale(model, glm::vec3(i.escala));
+			glm::mat4 model = MatrizModelo(i);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			modelos[i.modelo]->Draw(lightingShader);
 		}
 
-		// Flamas de las veladoras
+		// Flamas de las velas: se estiran y encogen con el parpadeo (si las velas estan apagadas no se dibujan)
 		lampShader.Use();
 		modelLoc = glGetUniformLocation(lampShader.Program, "model");
 		viewLoc = glGetUniformLocation(lampShader.Program, "view");
 		projLoc = glGetUniformLocation(lampShader.Program, "projection");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		glBindVertexArray(VAO);
-		for (int i = 0; i < NUM_VELADORAS; i++)
+		for (int i = 0; veladorasOn && i < (int)velas.size(); i++)
 		{
-			float k = veladorasOn ? Parpadeo(i, currentFrame) : 0.15f;
-			glm::mat4 model(1);
-			model = glm::translate(model, veladoras[i]);
-			model = glm::scale(model, glm::vec3(0.04f, 0.07f * k, 0.04f));
+			float k = Parpadeo(i, currentFrame);
+			glm::mat4 model = velas[i];
+			model = glm::translate(model, glm::vec3(0.0f, FLAMA_BASE, 0.0f));
+			model = glm::scale(model, glm::vec3(1.0f, 0.6f + 0.6f * k, 1.0f));
+			model = glm::translate(model, glm::vec3(0.0f, -FLAMA_BASE, 0.0f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glUniform3f(glGetUniformLocation(lampShader.Program, "lampColor"), 1.0f * k, 0.6f * k, 0.2f * k);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glUniform3f(glGetUniformLocation(lampShader.Program, "lampColor"), 1.0f, 0.55f + 0.3f * k, 0.15f + 0.2f * k);
+			flama.Draw(lampShader);
 		}
+		glBindVertexArray(VAO);
 
 		// Skybox al final: profundidad 1.0, sin la traslacion de la camara
 		glDepthFunc(GL_LEQUAL);
@@ -341,7 +371,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(viewSky));
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniform3f(glGetUniformLocation(skyboxShader.Program, "fogColor"), FOG_COLOR.x, FOG_COLOR.y, FOG_COLOR.z);
-		glUniform1f(glGetUniformLocation(skyboxShader.Program, "fogHorizon"), nieblaOn ? 0.15f : -0.05f);
+		glUniform1f(glGetUniformLocation(skyboxShader.Program, "fogHorizon"), nieblaOn ? 0.42f : -0.05f);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 36);

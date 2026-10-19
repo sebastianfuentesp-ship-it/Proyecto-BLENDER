@@ -1,0 +1,32 @@
+# Blender 5.2.2 LTS MTL File: 'Modelos.blend'
+# www.blender.org
+
+newmtl Cantera_Tumba
+Ns 22.499992
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd cantera_tumba.png
+
+newmtl Granito_Nicho
+Ns 490.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd granito_nicho.png
+
+newmtl Marmol_Lapida
+Ns 422.499969
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd marmol_lapida.png

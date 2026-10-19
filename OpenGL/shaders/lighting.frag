@@ -1,10 +1,10 @@
 #version 330 core
 
 // Basado en el lighting.frag del laboratorio (Phong con luz direccional, puntuales y spotlight).
-// Se agrega: 12 veladoras como luces puntuales, termino de Fresnel (luz de borde de la luna),
-// caras dobles para flores y petalos, y niebla de panteon.
+// Se agrega: las 24 velas mas cercanas a la camara como luces puntuales, termino de Fresnel (luz de borde de la luna),
+// caras dobles para flores y petalos, transparencia del papel picado y niebla de panteon.
 
-#define NUMBER_OF_POINT_LIGHTS 12
+#define NUMBER_OF_POINT_LIGHTS 24
 
 struct Material
 {
@@ -88,13 +88,18 @@ void main( )
     {
         norm = -norm;   // flores y petalos se ven por los dos lados
     }
+    vec4 texColor = texture( material.diffuse, TexCoords );
+    if ( texColor.a < 0.5 )
+    {
+        discard;        // huecos del papel picado
+    }
     vec3 viewDir = normalize( viewPos - FragPos );
-    vec3 albedo = vec3( texture( material.diffuse, TexCoords ) );
+    vec3 albedo = vec3( texColor );
 
     // Directional lighting (luna)
     vec3 result = CalcDirLight( dirLight, norm, viewDir, albedo );
 
-    // Point lights (veladoras)
+    // Point lights (velas)
     for ( int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++ )
     {
         result += CalcPointLight( pointLights[i], norm, FragPos, viewDir, albedo );

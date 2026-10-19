@@ -1,0 +1,22 @@
+# Blender 5.2.2 LTS MTL File: 'altar_con_flamas.blend'
+# www.blender.org
+
+newmtl Cera
+Ns 302.500000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd cera.png
+
+newmtl Mecha
+Ns 10.000005
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd mecha.png

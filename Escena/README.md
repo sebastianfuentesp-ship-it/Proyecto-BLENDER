@@ -5,19 +5,21 @@ Esta carpeta define cómo se acomodan los modelos en la escena final. Los modelo
 | Archivo | Para qué sirve |
 |---|---|
 | `escena_layout.txt` | Lista de objetos para OpenGL: `modelo x y z rotY escala` (Y arriba, en metros). |
-| `escena_preview.blend` | Vista previa en Blender: enlaza los `.blend` de `Modelos/` en las mismas posiciones, con cielo, niebla y veladoras. No se exporta. |
+| `escena_preview.blend` | Vista previa en Blender: enlaza los `.blend` de `Modelos/` en las mismas posiciones, con cielo y niebla. No se exporta. |
+| `piezas/papel_picado_tira.blend` | Tira de papel picado (dos postes, cordel y banderitas) armada con las texturas de `Decoracion.blend`. |
 | `cielo_equirect.png` | El mismo cielo del skybox, en formato panorámico, para la vista previa en Blender. |
-| `preview_*.png` | Renders de la vista previa. |
+| `preview_*.png` | Capturas de la escena en OpenGL. |
 
 ## Qué hay en la escena
 
 - El escenario con la reja y la capilla al fondo del camino.
-- Doce tumbas (el ángel del dolor repetido, con tamaño y giro variados), con calaveritas, portarretratos y veladoras al frente.
-- La ofrenda principal (platillos, portarretratos y calaveritas) frente a la primera tumba de la derecha.
-- Un camino de cempasúchil: pétalos sobre el camino (`petalos_camino`) y dos hileras de flores a las orillas, desde afuera de la reja hasta la capilla.
-- Flores regadas por todo el panteón y al pie de cada tumba, dos catrinas y árboles adentro y afuera de la barda.
+- 35 tumbas (modelo de Sebastian) y 5 ángeles del dolor en filas a cada lado del camino, mirando al camino. Cada tumba lleva una guirnalda de cempasúchil, velas y flores al frente, y a veces pan de muerto, calaverita, portarretrato o copalero.
+- El altar de muertos (modelo de Melissa) al final del camino, frente a la capilla: platillos en el nivel de arriba, retratos, velas en cada nivel, calaveritas, pan de muerto, tres copaleros, guirnaldas y un arco de cempasúchil.
+- Un camino de cempasúchil: pétalos sobre el camino (`petalos_camino`), dos hileras de flores y velas a las orillas.
+- Tiras de papel picado sobre el camino, en la entrada, frente al altar y en los pasillos entre tumbas.
+- 186 velas en todo el panteón, dos catrinas (una en la entrada y otra junto al altar) y 84 árboles alrededor de la barda.
 
-En total son unas 435 instancias, de las cuales 374 son flores. Cada modelo se carga **una sola vez** y se dibuja varias veces, cambiando solo la matriz `model`. Si hace falta más rendimiento, usa *instancing* (`glDrawElementsInstanced`) para las flores.
+En total son unas 900 instancias, de las cuales 453 son flores y 186 velas. Cada modelo se carga **una sola vez** y se dibuja varias veces, cambiando solo la matriz `model`. Si hace falta más rendimiento, usa *instancing* (`glDrawElementsInstanced`) para las flores.
 
 ## Cargar el layout (C++)
 

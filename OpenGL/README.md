@@ -1,6 +1,6 @@
 # Escena en OpenGL
 
-Ejecutable del proyecto de teoría: carga los modelos de este repositorio (exportados a OBJ con sus texturas) y arma el panteón en OpenGL 3.3. Usa como base el código del laboratorio (`Shader.h`, `Camera.h`, `Mesh.h`, `Model.h`).
+Ejecutable del proyecto de teoría: carga los modelos de todo el equipo (exportados a OBJ con sus texturas) y arma el panteón en OpenGL 3.3. Usa como base el código del laboratorio (`Shader.h`, `Camera.h`, `Mesh.h`, `Model.h`).
 
 ## Cómo compilar
 
@@ -31,10 +31,10 @@ Si cambian un modelo en Blender, vuelvan a exportarlo a `assets/models/<modelo>/
 
 Dos técnicas:
 
-- **Phong** con tres tipos de luz: la luna (direccional), 12 veladoras (puntuales, con parpadeo) y una linterna en la cámara (spotlight).
+- **Phong** con tres tipos de luz: la luna (direccional), las velas (puntuales, con parpadeo) y una linterna en la cámara (spotlight). Hay 186 velas en la escena; en cada cuadro se mandan al shader las 24 más cercanas a la cámara.
 - **Fresnel** (aproximación de Schlick): brillo azulado de la luna en los bordes de los objetos.
 
-Además, niebla exponencial que se concentra cerca del suelo y se funde con el horizonte del skybox.
+Además, niebla densa exponencial que se concentra cerca del suelo y se funde con el horizonte del skybox. Las flamas de las velas se dibujan sin iluminación (shader `lamp`) y se estiran con el parpadeo. El papel picado usa la transparencia de su textura (`discard` en `lighting.frag`; `Model.h` carga las texturas en RGBA).
 
 ## Controles
 
@@ -43,7 +43,7 @@ Además, niebla exponencial que se concentra cerca del suelo y se funde con el h
 | W A S D / flechas | Mover la cámara |
 | Ratón | Mirar alrededor |
 | F | Prender o apagar la linterna |
-| V | Prender o apagar las veladoras |
+| V | Prender o apagar las velas |
 | R | Activar o quitar el brillo de Fresnel |
 | N | Activar o quitar la niebla |
 | + / - | Subir o bajar la luz de la luna |

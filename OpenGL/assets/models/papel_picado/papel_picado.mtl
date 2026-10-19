@@ -1,0 +1,82 @@
+# Blender 5.2.2 LTS MTL File: 'papel_picado_tira.blend'
+# www.blender.org
+
+newmtl Cordel
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd cordel.png
+
+newmtl Papel_0
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd papel_amarillo_floral.png
+map_d papel_amarillo_floral.png
+
+newmtl Papel_1
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd papel_azul_aves.png
+map_d papel_azul_aves.png
+
+newmtl Papel_2
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd papel_rosa_floral.png
+map_d papel_rosa_floral.png
+
+newmtl Papel_3
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd papel_rojo_aves.png
+map_d papel_rojo_aves.png
+
+newmtl Papel_4
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd papel_verde_pabellon.png
+map_d papel_verde_pabellon.png
+
+newmtl Papel_5
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd papel_frida_morado.png
+map_d papel_frida_morado.png
+
+newmtl Poste_Madera
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd poste_madera.png
