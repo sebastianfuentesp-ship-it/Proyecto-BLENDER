@@ -31,8 +31,8 @@ Este repositorio contiene los **modelos 3D hechos en Blender**, sus texturas, lo
 | Skybox nocturno (`Texturas/skybox/`) | Listo |
 | Shaders de skybox, niebla y luz de luna (`Shaders/`) | Listo |
 | Acomodo de la escena (`Escena/`) | Listo, se ajustará al llegar los demás modelos |
-| Carga de modelos y texturas en OpenGL | Pendiente |
-| Iluminación (2 técnicas y 2 interacciones con luces) | Pendiente, entrega del 27 de octubre |
+| Carga de modelos y texturas en OpenGL (`OpenGL/`) | Listo |
+| Iluminación: Phong y Fresnel, luces que se prenden y apagan con el teclado | Listo, entrega del 27 de octubre |
 | Animaciones (por código, por keyframes y por input) | Pendiente |
 
 ## Estructura del repositorio
@@ -43,6 +43,7 @@ Proyecto-BLENDER/
 ├── Texturas/    # Imágenes que usan los materiales, una carpeta por modelo (incluye skybox/)
 ├── Shaders/     # Shaders de la escena (skybox, niebla, modelo base)
 ├── Escena/      # Acomodo de la escena para OpenGL y vista previa en Blender
+├── OpenGL/      # Ejecutable en OpenGL (Visual Studio, Win32) con la escena armada
 └── README.md
 ```
 
@@ -105,7 +106,7 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 
 ## Escena
 
-`Escena/escena_layout.txt` tiene una línea por objeto (`modelo x y z rotY escala`, en coordenadas de OpenGL). Cada modelo se carga una vez y se dibuja en cada posición cambiando su matriz `model`. `Escena/escena_preview.blend` muestra la escena armada en Blender, solo como referencia. El código para leer el archivo, montar el skybox y configurar la niebla está en [`Escena/README.md`](Escena/README.md).
+`Escena/escena_layout.txt` tiene una línea por objeto (`modelo x y z rotY escala`, en coordenadas de OpenGL). Cada modelo se carga una vez y se dibuja en cada posición cambiando su matriz `model`. `Escena/escena_preview.blend` muestra la escena armada en Blender, solo como referencia. El código para leer el archivo, montar el skybox y configurar la niebla está en [`Escena/README.md`](Escena/README.md). El proyecto de Visual Studio que arma la escena completa está en [`OpenGL/`](OpenGL/README.md).
 
 ## Requisitos
 

@@ -1,0 +1,18 @@
+# Normalizar fin de linea
+* text=auto
+*.sln text eol=crlf
+*.vcxproj text eol=crlf
+*.vcxproj.filters text eol=crlf
+
+# Modelos: sin conversion de fin de linea ni diffs gigantes
+*.obj -text -diff
+*.mtl -text -diff
+
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tga binary
+*.dll binary
+*.lib binary
+*.exe binary

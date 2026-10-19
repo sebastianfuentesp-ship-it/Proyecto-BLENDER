@@ -1,0 +1,48 @@
+# --- Visual Studio ---
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+ipch/
+
+# --- Salidas de compilacion ---
+x64/
+x86/
+[Dd]ebug/
+[Rr]elease/
+[Oo]bj/
+*.ilk
+*.pdb
+*.idb
+*.iobj
+*.ipdb
+*.tlog
+*.lastbuildstate
+*.log
+# Archivos objeto de C++ (.obj de compilacion). Los modelos .obj de assets/ SI se suben:
+*.obj
+!assets/**/*.obj
+
+# Las librerias de external/ SI se suben (incluye external/GLEW/lib/Release/Win32),
+# pero nunca los simbolos de depuracion de assimp (pesan mas de 50 MB)
+!external/**
+external/**/*.pdb
+external/**/*.ilk
+
+# --- Blender (los .blend viven en el repo Proyecto-BLENDER) ---
+*.blend
+*.blend1
+*.blend2
+
+# --- Comprimidos (no se suben) ---
+*.zip
+*.rar
+*.7z
+
+# --- Sistema ---
+Thumbs.db
+desktop.ini
+.DS_Store
