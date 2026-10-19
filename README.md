@@ -27,8 +27,9 @@ Este repositorio contiene los **modelos 3D hechos en Blender**, junto con las te
 ```
 Proyecto-BLENDER/
 ├── Modelos/     # Archivos .blend de cada modelo
-├── Texturas/    # Imágenes usadas por los materiales
-├── Shaders/     # Shaders de la escena
+├── Texturas/    # Imágenes usadas por los materiales (incluye skybox/)
+├── Shaders/     # Shaders de la escena (skybox, niebla, modelo base)
+├── Escena/      # Layout de la escena para OpenGL y vista previa en Blender
 └── README.md
 ```
 
