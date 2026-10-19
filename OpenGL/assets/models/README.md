@@ -55,5 +55,12 @@ Estos son los modelos texturizados que carga `src/main.cpp`. Dónde va cada uno 
 | `tumba/tumba.obj` | Sebastian | 5,652 | abajo al centro | cantera, mármol de la lápida, granito del nicho |
 | `pan_de_muerto/pan_de_muerto.obj` | Sebastian | 6,460 | abajo al centro | pan, azúcar |
 | `papel_picado/papel_picado.obj` | Sebastian | 382 | abajo al centro (entre los postes) | 6 diseños de papel picado con transparencia, postes, cordel |
+| `terrazas/terrazas.obj` | Yasser | 336 | origen de la escena | muro de piedra, tierra |
+| `flor_baja/flor_baja.obj` | Yasser | 1,209 | abajo al centro | la flor de cempasúchil con *Decimate* al 25 %, para el camino |
+| `guirnalda_baja/guirnalda_baja.obj` | Yasser | 1,447 | arriba al centro | guirnalda con *Decimate* al 30 %, para los muros |
+| `tapete_flores/tapete_flores.obj` | Yasser | 12 | abajo al centro | tapete de pétalos con calavera |
+| `florero/florero.obj` | Yasser | 6,219 | abajo al centro | talavera, pétalo, centro, tallo, hoja |
+| `angelito/angelito.obj` | Yasser | 12,120 | abajo al centro | mármol blanco, piedra del pedestal |
+| `cruz_tumba/cruz_tumba.obj` | Yasser | 36 | abajo al centro | cantera |
 
 El pan de muerto se exporta sin los cristales de azúcar de Geometry Nodes (eran 27 mil instancias, más de 5 millones de triángulos); el azúcar queda en la textura. El copalero se exporta con *Decimate* al 20 %.

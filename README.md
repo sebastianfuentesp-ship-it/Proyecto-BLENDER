@@ -31,7 +31,7 @@ Este repositorio contiene los **modelos 3D hechos en Blender**, sus texturas, lo
 | Modelos de Cristian | Pendiente de subir |
 | Skybox nocturno (`Texturas/skybox/`) | Listo |
 | Shaders de skybox, niebla y luz de luna (`Shaders/`) | Listo |
-| Acomodo de la escena (`Escena/`) | Listo con los modelos de todo el equipo |
+| Acomodo de la escena (`Escena/`) | Listo con los modelos de todo el equipo, terrazas y decoración variada |
 | Carga de modelos y texturas en OpenGL (`OpenGL/`) | Listo |
 | Iluminación: Phong y Fresnel, luces que se prenden y apagan con el teclado | Listo, entrega del 27 de octubre |
 | Animaciones (por código, por keyframes y por input) | Pendiente |
@@ -84,9 +84,14 @@ Están en `Modelos/Yasser/` y `Modelos/Yasser/modelos_cargados/`, todos texturiz
 | Árbol del panteón | `modelos_cargados/arbol_panteon.blend` | 84 árboles, casi todos alrededor de la barda |
 | Catrina | `modelos_cargados/catrina.blend` | 2 catrinas |
 | Platillos del altar | `modelos_cargados/platillos_altar.blend` | En el nivel de arriba del altar de muertos |
-| Flor de cempasúchil | `flor_cempasuchil.blend` | Una sola flor, repetida 453 veces |
+| Flor de cempasúchil | `flor_cempasuchil.blend` | Una sola flor, repetida 943 veces (en el camino con su versión ligera `flor_baja`) |
 | Guirnalda de cempasúchil | `cempasuchil.blend` (cadenas de flores) | Sobre cada tumba y en el altar |
 | Pétalos del camino | `petalos_camino.blend` | Pétalos sobre el camino |
+| Terrazas de tierra | `terrazas.blend` | Dos escalones de tierra con muros de piedra a cada lado del camino, con escaleras |
+| Tapete de flores | `extras.blend` | Tapete de pétalos con una calavera, frente al altar y en algunas tumbas (9) |
+| Florero de talavera | `florero.blend` | Florero con un ramo de cempasúchil, en las tumbas (35) |
+| Angelito | `angelito.blend` | Estatua chica de ángel sobre pedestal, en tumbas y sueltos (12) |
+| Cruz de piedra | `cruz_tumba.blend` | Tumbas sencillas con cruz (6) |
 
 ## Texturas
 
@@ -108,6 +113,8 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 | Altar, velas y copalero | `Texturas/altar_con_flamas/` |
 | Tumba | `Texturas/tumba/` |
 | Pan de muerto | `Texturas/pan_de_muerto/` |
+| Terrazas | `Texturas/terrazas/` |
+| Tapete de flores, florero y cruz | `Texturas/extras/` |
 | Papel picado | `Texturas/Decoración/` (originales) y `Texturas/papel_picado/` (recortadas para OpenGL, con transparencia) |
 | Skybox | `Texturas/skybox/` (6 caras: right, left, top, bottom, front, back) |
 
@@ -121,9 +128,13 @@ Las UV usan proyección de caja en metros reales, por lo que algunas texturas se
 
 ## Escena
 
-La escena tiene unas 900 instancias: 35 tumbas y 5 ángeles en filas a los lados del camino, cada tumba con su guirnalda, velas, flores y a veces pan de muerto, calaverita, portarretrato o copal; el altar de muertos al final del camino, frente a la capilla, con los platillos, velas, copal, calaveritas y retratos; 186 velas por todo el panteón; tiras de papel picado sobre el camino y los pasillos; 84 árboles alrededor de la barda y niebla densa.
+La escena tiene unas 1,500 instancias. El terreno sube en dos terrazas de tierra a cada lado del camino, como en los panteones de México, con escaleras entre niveles. Hay 27 tumbas, 6 cruces de piedra y 5 ángeles en filas; las tumbas están pintadas de distintos colores y cada familia las arregla diferente: unas muy adornadas (guirnalda, florero, tapete de flores, angelito, arco de flores y muchas velas), otras más sencillas y algunas casi abandonadas.
 
-`Escena/escena_layout.txt` tiene una línea por objeto (`modelo x y z rotY escala`, en coordenadas de OpenGL). Cada modelo se carga una vez y se dibuja en cada posición cambiando su matriz `model`. `Escena/escena_preview.blend` muestra la escena armada en Blender, solo como referencia. El código para leer el archivo, montar el skybox y configurar la niebla está en [`Escena/README.md`](Escena/README.md). El proyecto de Visual Studio que arma la escena completa está en [`OpenGL/`](OpenGL/README.md).
+El altar de muertos está al final del camino, frente a la capilla, con platillos, velas, copal, calaveritas, retratos y un tapete de flores al frente. El camino de cempasúchil es denso (943 flores), con 220 velas de colores por todo el panteón, 98 guirnaldas (en las tumbas, el altar, la capilla y los muros de las terrazas), 23 tiras de papel picado (sobre el camino, la entrada, el altar y los pasillos), una catrina gigante de unos 6 m junto a la entrada, otra junto al altar, 84 árboles alrededor de la barda y niebla densa.
+
+Las capturas de la escena están en `Escena/preview_*.png`.
+
+`Escena/escena_layout.txt` tiene una línea por objeto (`modelo x y z rotY escala`, en coordenadas de OpenGL, con un color opcional `r g b` al final para pintar el modelo). Cada modelo se carga una vez y se dibuja en cada posición cambiando su matriz `model`. `Escena/escena_preview.blend` muestra la escena armada en Blender, solo como referencia. El código para leer el archivo, montar el skybox y configurar la niebla está en [`Escena/README.md`](Escena/README.md). El proyecto de Visual Studio que arma la escena completa está en [`OpenGL/`](OpenGL/README.md).
 
 ## Requisitos
 

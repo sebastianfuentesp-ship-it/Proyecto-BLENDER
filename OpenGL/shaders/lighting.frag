@@ -2,7 +2,7 @@
 
 // Basado en el lighting.frag del laboratorio (Phong con luz direccional, puntuales y spotlight).
 // Se agrega: las 24 velas mas cercanas a la camara como luces puntuales, termino de Fresnel (luz de borde de la luna),
-// caras dobles para flores y petalos, transparencia del papel picado y niebla de panteon.
+// caras dobles para flores y petalos, transparencia del papel picado, tinte por objeto y niebla de panteon.
 
 #define NUMBER_OF_POINT_LIGHTS 24
 
@@ -62,6 +62,7 @@ uniform DirLight dirLight;
 uniform PointLight pointLights[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform Material material;
+uniform vec3 tinte;   // color por instancia (tumbas pintadas, velas de color); 1,1,1 = sin cambio
 
 // Fresnel: brillo azulado de la luna en los bordes de los objetos
 uniform vec3  fresnelColor;     // color del borde
@@ -94,7 +95,7 @@ void main( )
         discard;        // huecos del papel picado
     }
     vec3 viewDir = normalize( viewPos - FragPos );
-    vec3 albedo = vec3( texColor );
+    vec3 albedo = vec3( texColor ) * tinte;
 
     // Directional lighting (luna)
     vec3 result = CalcDirLight( dirLight, norm, viewDir, albedo );

@@ -40,7 +40,7 @@ const GLuint WIDTH = 1280, HEIGHT = 720;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera: entrada del panteon, afuera de la reja, mirando hacia la capilla
-Camera  camera(glm::vec3(0.0f, 1.7f, 17.5f));
+Camera  camera(glm::vec3(0.0f, 1.7f, 19.5f));
 GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
 bool keys[1024];
@@ -60,6 +60,7 @@ struct Instancia
 	glm::vec3 pos;
 	float rotY;
 	float escala;
+	glm::vec3 tinte;   // color que se multiplica por la textura (tumbas pintadas, velas de color)
 };
 
 // Velas: cada instancia de "vela" del layout lleva su flama y es una luz puntual candidata.
@@ -113,6 +114,10 @@ std::vector<Instancia> CargaLayout(const std::string &ruta)
 		std::istringstream ss(linea);
 		Instancia i;
 		ss >> i.modelo >> i.pos.x >> i.pos.y >> i.pos.z >> i.rotY >> i.escala;
+		if (!(ss >> i.tinte.r >> i.tinte.g >> i.tinte.b))
+		{
+			i.tinte = glm::vec3(1.0f);   // sin tinte
+		}
 		v.push_back(i);
 	}
 
@@ -331,6 +336,7 @@ int main()
 		GLint modelLoc = glGetUniformLocation(prog, "model");
 		GLint viewLoc = glGetUniformLocation(prog, "view");
 		GLint projLoc = glGetUniformLocation(prog, "projection");
+		GLint tinteLoc = glGetUniformLocation(prog, "tinte");
 
 		// Pass the matrices to the shader
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
@@ -341,6 +347,7 @@ int main()
 		{
 			glm::mat4 model = MatrizModelo(i);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+			glUniform3f(tinteLoc, i.tinte.r, i.tinte.g, i.tinte.b);
 			modelos[i.modelo]->Draw(lightingShader);
 		}
 
