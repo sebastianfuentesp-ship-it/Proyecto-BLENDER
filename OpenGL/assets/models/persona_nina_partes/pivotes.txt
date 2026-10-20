@@ -1,0 +1,9 @@
+# parte  pivote_x pivote_y pivote_z (coordenadas de OpenGL, metros)  padre  offset_desde_el_padre_x y z
+torso 0.0 0.5796 -0.0 - 0.0 0.5796 -0.0
+cabeza 0.0 0.9671 -0.005 torso 0.0 0.3875 -0.005
+brazoizq 0.0948 0.9009 -0.0 torso 0.0948 0.3213 -0.0
+brazoder -0.0948 0.9009 -0.0 torso -0.0948 0.3213 -0.0
+musloizq 0.0599 0.5796 -0.0 torso 0.0599 0.0 -0.0
+musloder -0.0599 0.5796 -0.0 torso -0.0599 0.0 -0.0
+piernaizq 0.0567 0.315 0.005 musloizq -0.0032 -0.2646 0.005
+piernader -0.0567 0.315 0.005 musloder 0.0032 -0.2646 0.005

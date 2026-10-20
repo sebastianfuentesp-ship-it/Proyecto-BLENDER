@@ -15,15 +15,15 @@ Esta carpeta define cómo se acomodan los modelos en la escena final. Los modelo
 - El escenario con la reja y la capilla al fondo del camino.
 - Dos terrazas de tierra a cada lado del camino (a 0.45 m y 0.9 m), con muros de piedra y escaleras, como los panteones en ladera de México.
 - 40 tumbas de cinco tipos en filas sobre las terrazas, mirando al camino: 15 de cantera (modelo de Sebastian), 7 de azulejo, 2 de tierra con cruz de madera, 4 mausoleos familiares y 12 cruces de piedra, además de 4 ángeles del dolor. Las tumbas están pintadas de colores distintos (azul, rosa mexicano, verde, amarillo, cal blanca) y algunas se ven viejas.
-- Cada tumba es de una "familia" que la arregla distinto: muy arreglada (guirnalda, florero de talavera, corona de flores en tripié, angelito, tapete de flores, arco de cempasúchil, muchas velas, comida y retratos), media, sencilla o casi abandonada (una vela y pocas flores).
-- 126 personas: familias paradas o hincadas frente a sus tumbas, gente viendo el altar y caminando en grupitos por el camino y los pasillos (8 modelos distintos, repetidos con un tinte de ropa diferente).
+- Cada tumba es de una "familia" que la arregla distinto: muy arreglada (guirnalda, florero blanco, corona de flores en tripié (ocho tipos, como las de funeraria), angelito, tapete de flores, arco de cempasúchil, muchas velas, comida y retratos), media, sencilla o casi abandonada (una vela y pocas flores).
+- 125 personas: familias frente a sus tumbas, gente viendo el altar y caminando en grupitos por el camino y los pasillos. Son 4 modelos (hombre, mujer, niño y niña) con 3 variantes de textura cada uno, repetidos con un tinte de ropa diferente.
 - El altar de muertos al final del camino, frente a la capilla (`ofrenda`, al estilo de una ofrenda tradicional): tres niveles con manteles rosas y papel picado, cajas de madera a los lados, banca con los platillos, huacal con naranjas, macetas de cempasúchil, floreros con flores rosas, calabazas, jarritos, caña, pan de muerto, calaveritas, retratos, velas y copal, con pétalos regados y un camino de flores naranjas y rosas en el piso.
-- Un camino de cempasúchil denso: pétalos sobre el camino (`petalos_camino`), tres hileras de flores a cada orilla y velas. Tres tapetes de flores con diseños distintos sobre el camino (sol, corazón y franjas).
+- Un camino de cempasúchil denso: pétalos sobre el camino (`petalos_camino`), tres hileras de flores a cada orilla y velas. Cuatro tapetes de flores sobre el camino (sol, calavera, mariposa monarca y vela) y otros en las tumbas.
 - 21 tiras de papel picado: sobre el camino cada 1.2 m, en la entrada, detrás del altar y en los pasillos entre tumbas.
 - Guirnaldas en las tumbas, el altar, la fachada de la capilla y a lo largo de los muros de las terrazas.
-- 459 velas en todo el panteón (también en las orillas de las terrazas), 12 angelitos, una catrina gigante (unos 6 m) junto a la entrada, otra junto al altar y 84 árboles alrededor de la barda.
+- 464 velas en todo el panteón (también en las orillas de las terrazas), 12 angelitos, una catrina gigante (unos 6 m) junto a la entrada, otra junto al altar y 84 árboles alrededor de la barda.
 
-En total son unas 2,000 instancias, de las cuales unas 1,050 son flores y 459 velas. Para que el camino no pese más, las flores de las orillas usan `flor_baja` (la flor con *Decimate*, 1,209 triángulos) y las guirnaldas de los muros usan `guirnalda_baja`. Cada modelo se carga **una sola vez** y se dibuja varias veces, cambiando solo la matriz `model`. Si hace falta más rendimiento, usa *instancing* (`glDrawElementsInstanced`) para las flores.
+En total son unas 2,000 instancias, de las cuales unas 1,020 son flores y 464 velas. Para que el camino no pese más, las flores de las orillas usan `flor_baja` (la flor con *Decimate*, 1,209 triángulos) y las guirnaldas de los muros usan `guirnalda_baja`. Cada modelo se carga **una sola vez** y se dibuja varias veces, cambiando solo la matriz `model`. Los modelos pesados también tienen una versión ligera (`<modelo>_lod.obj`) que el programa usa de lejos; ver `OpenGL/README.md`.
 
 ## Cargar el layout (C++)
 

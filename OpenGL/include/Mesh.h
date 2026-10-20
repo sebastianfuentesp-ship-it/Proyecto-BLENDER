@@ -57,60 +57,63 @@ public:
 	}
 
 	// Render the mesh
-	void Draw(Shader shader)
+	// Las ubicaciones de los uniforms se buscan una sola vez por shader (antes se buscaban en cada dibujo,
+	// y con miles de objetos en la escena eso bajaba mucho los FPS).
+	void Draw(Shader &shader)
 	{
-		// Bind appropriate textures
-		GLuint diffuseNr = 1;
-		GLuint specularNr = 1;
+		if (this->programa != shader.Program)
+		{
+			this->programa = shader.Program;
+			this->locTexturas.clear();
+			GLuint diffuseNr = 1;
+			GLuint specularNr = 1;
+
+			for (GLuint i = 0; i < this->textures.size(); i++)
+			{
+				string name = this->textures[i].type;
+				string number = (name == "texture_diffuse") ? to_string(diffuseNr++) : to_string(specularNr++);
+				this->locTexturas.push_back(glGetUniformLocation(shader.Program, (name + number).c_str()));
+			}
+			this->locBrillo = glGetUniformLocation(shader.Program, "material.shininess");
+		}
 
 		for (GLuint i = 0; i < this->textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i); // Active proper texture unit before binding
-											  // Retrieve texture number (the N in diffuse_textureN)
-			stringstream ss;
-			string number;
-			string name = this->textures[i].type;
-
-			if (name == "texture_diffuse")
-			{
-				ss << diffuseNr++; // Transfer GLuint to stream
-			}
-			else if (name == "texture_specular")
-			{
-				ss << specularNr++; // Transfer GLuint to stream
-			}
-
-			number = ss.str();
-			// Now set the sampler to the correct texture unit
-			glUniform1i(glGetUniformLocation(shader.Program, (name + number).c_str()), i);
-			// And finally bind the texture
+			glUniform1i(this->locTexturas[i], i);
 			glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
 		}
 
-		// Also set each mesh's shininess property to a default value (if you want you could extend this to another mesh property and possibly change this value)
-		glUniform1f(glGetUniformLocation(shader.Program, "material.shininess"), 16.0f);
+		// Also set each mesh's shininess property to a default value
+		glUniform1f(this->locBrillo, 16.0f);
 
 		// Draw mesh
 		glBindVertexArray(this->VAO);
 		glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-
-		// Always good practice to set everything back to defaults once configured.
-		for (GLuint i = 0; i < this->textures.size(); i++)
-		{
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
 	}
+
+	// Caja que envuelve la malla (para no dibujar lo que la camara no ve)
+	glm::vec3 minimo, maximo;
 
 private:
 	/*  Render data  */
 	GLuint VAO, VBO, EBO;
+	GLuint programa = 0;
+	vector<GLint> locTexturas;
+	GLint locBrillo = -1;
 
 	/*  Functions    */
 	// Initializes all the buffer objects/arrays
 	void setupMesh()
 	{
+		this->minimo = glm::vec3(1e9f);
+		this->maximo = glm::vec3(-1e9f);
+		for (auto &v : this->vertices)
+		{
+			this->minimo = glm::min(this->minimo, v.Position);
+			this->maximo = glm::max(this->maximo, v.Position);
+		}
+
 		// Create buffers/arrays
 		glGenVertexArrays(1, &this->VAO);
 		glGenBuffers(1, &this->VBO);

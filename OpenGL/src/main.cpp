@@ -63,6 +63,23 @@ struct Instancia
 	glm::vec3 tinte;   // color que se multiplica por la textura (tumbas pintadas, velas de color)
 };
 
+// Lo que se dibuja de cada instancia: matriz ya calculada, esfera envolvente en el mundo y version ligera (LOD)
+struct Dibujo
+{
+	Model *modelo;
+	Model *lod;          // assets/models/<m>/<m>_lod.obj si existe (se usa de lejos)
+	glm::mat4 model;
+	glm::vec3 centro;    // centro de la esfera envolvente en el mundo
+	float radio;
+	glm::vec3 tinte;
+};
+
+// Optimizacion: solo se dibuja lo que esta dentro de la vista, lo chico y lejano se oculta en la niebla
+// y lo que esta lejos se dibuja con su version ligera.
+const float DIST_LOD = 11.0f;      // metros: a partir de aqui se usa el LOD
+const float DIST_NIEBLA = 40.0f;   // con niebla, lo chico (radio < 1.5 m) mas lejos que esto no se ve
+const float DIST_SIN_NIEBLA = 90.0f;
+
 // Velas: cada instancia de "vela" del layout lleva su flama y es una luz puntual candidata.
 // El shader recibe solo las MAX_LUCES velas mas cercanas a la camara.
 const int MAX_LUCES = 24;
@@ -191,6 +208,7 @@ int main()
 	// Layout de la escena y modelos: cada modelo se carga una sola vez
 	std::vector<Instancia> layout = CargaLayout("assets/escena_layout.txt");
 	std::map<std::string, Model*> modelos;
+	std::map<std::string, Model*> lods;
 
 	for (auto &i : layout)
 	{
@@ -199,8 +217,25 @@ int main()
 			std::string ruta = "assets/models/" + i.modelo + "/" + i.modelo + ".obj";
 			std::cout << "Cargando " << ruta << std::endl;
 			modelos[i.modelo] = new Model((char*)ruta.c_str());
+			std::string rutaLod = "assets/models/" + i.modelo + "/" + i.modelo + "_lod.obj";
+			lods[i.modelo] = std::ifstream(rutaLod).good() ? new Model((char*)rutaLod.c_str()) : nullptr;
 		}
 	}
+
+	// Se calcula una vez la matriz y la esfera de cada instancia; se ordenan por modelo para cambiar menos de texturas
+	std::vector<Dibujo> dibujos;
+	for (auto &i : layout)
+	{
+		Dibujo d;
+		d.modelo = modelos[i.modelo];
+		d.lod = lods[i.modelo];
+		d.model = MatrizModelo(i);
+		d.centro = glm::vec3(d.model * glm::vec4(d.modelo->Centro(), 1.0f));
+		d.radio = d.modelo->Radio() * i.escala;
+		d.tinte = i.tinte;
+		dibujos.push_back(d);
+	}
+	std::stable_sort(dibujos.begin(), dibujos.end(), [](const Dibujo &a, const Dibujo &b) { return a.modelo < b.modelo; });
 
 	// Flama de las velas: se dibuja sin iluminacion con el shader de lampara
 	Model flama((char*)"assets/models/flama/flama.obj");
@@ -342,14 +377,49 @@ int main()
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-		// Dibuja cada instancia del layout: model = T * Ry * S
-		for (auto &i : layout)
+		// Planos de la vista (frustum) para descartar lo que queda fuera de la pantalla
+		glm::mat4 pv = projection * view;
+		glm::vec4 planos[6];
+		for (int k = 0; k < 3; k++)
 		{
-			glm::mat4 model = MatrizModelo(i);
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glUniform3f(tinteLoc, i.tinte.r, i.tinte.g, i.tinte.b);
-			modelos[i.modelo]->Draw(lightingShader);
+			planos[2 * k] = glm::vec4(pv[0][3] + pv[0][k], pv[1][3] + pv[1][k], pv[2][3] + pv[2][k], pv[3][3] + pv[3][k]);
+			planos[2 * k + 1] = glm::vec4(pv[0][3] - pv[0][k], pv[1][3] - pv[1][k], pv[2][3] - pv[2][k], pv[3][3] - pv[3][k]);
 		}
+		for (auto &p : planos)
+		{
+			p /= glm::length(glm::vec3(p));
+		}
+		float distMax = nieblaOn ? DIST_NIEBLA : DIST_SIN_NIEBLA;
+
+		// Dibuja cada instancia del layout: model = T * Ry * S
+		for (auto &d : dibujos)
+		{
+			bool visible = true;
+			for (auto &p : planos)
+			{
+				if (glm::dot(glm::vec3(p), d.centro) + p.w < -d.radio)
+				{
+					visible = false;
+					break;
+				}
+			}
+			if (!visible)
+			{
+				continue;
+			}
+
+			float dist = glm::length(d.centro - cam) - d.radio;
+			if (d.radio < 1.5f && dist > distMax)
+			{
+				continue;
+			}
+
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(d.model));
+			glUniform3f(tinteLoc, d.tinte.r, d.tinte.g, d.tinte.b);
+			Model *m = (d.lod != nullptr && dist > DIST_LOD) ? d.lod : d.modelo;
+			m->Draw(lightingShader);
+		}
+		glBindVertexArray(0);
 
 		// Flamas de las velas: se estiran y encogen con el parpadeo (si las velas estan apagadas no se dibujan)
 		lampShader.Use();
@@ -358,15 +428,20 @@ int main()
 		projLoc = glGetUniformLocation(lampShader.Program, "projection");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		GLint lampColorLoc = glGetUniformLocation(lampShader.Program, "lampColor");
 		for (int i = 0; veladorasOn && i < (int)velas.size(); i++)
 		{
+			if (glm::length(luzVela[i] - cam) > distMax)
+			{
+				continue;
+			}
 			float k = Parpadeo(i, currentFrame);
 			glm::mat4 model = velas[i];
 			model = glm::translate(model, glm::vec3(0.0f, FLAMA_BASE, 0.0f));
 			model = glm::scale(model, glm::vec3(1.0f, 0.6f + 0.6f * k, 1.0f));
 			model = glm::translate(model, glm::vec3(0.0f, -FLAMA_BASE, 0.0f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glUniform3f(glGetUniformLocation(lampShader.Program, "lampColor"), 1.0f, 0.55f + 0.3f * k, 0.15f + 0.2f * k);
+			glUniform3f(lampColorLoc, 1.0f, 0.55f + 0.3f * k, 0.15f + 0.2f * k);
 			flama.Draw(lampShader);
 		}
 		glBindVertexArray(VAO);
@@ -390,6 +465,10 @@ int main()
 	}
 
 	for (auto &m : modelos)
+	{
+		delete m.second;
+	}
+	for (auto &m : lods)
 	{
 		delete m.second;
 	}

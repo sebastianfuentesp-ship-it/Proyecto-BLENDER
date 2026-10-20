@@ -33,12 +33,35 @@ public:
 	}
 
 	// Draws the model, and thus all its meshes
-	void Draw(Shader shader)
+	void Draw(Shader &shader)
 	{
 		for (GLuint i = 0; i < this->meshes.size(); i++)
 		{
 			this->meshes[i].Draw(shader);
 		}
+	}
+
+	// Esfera que envuelve todo el modelo (en sus coordenadas locales)
+	glm::vec3 Centro()
+	{
+		glm::vec3 mn(1e9f), mx(-1e9f);
+		for (auto &m : this->meshes)
+		{
+			mn = glm::min(mn, m.minimo);
+			mx = glm::max(mx, m.maximo);
+		}
+		return this->meshes.empty() ? glm::vec3(0.0f) : (mn + mx) * 0.5f;
+	}
+
+	float Radio()
+	{
+		glm::vec3 mn(1e9f), mx(-1e9f);
+		for (auto &m : this->meshes)
+		{
+			mn = glm::min(mn, m.minimo);
+			mx = glm::max(mx, m.maximo);
+		}
+		return this->meshes.empty() ? 0.0f : glm::length(mx - mn) * 0.5f;
 	}
 
 private:

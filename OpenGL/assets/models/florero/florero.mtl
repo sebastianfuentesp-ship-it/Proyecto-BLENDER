@@ -31,7 +31,7 @@ d 1.000000
 illum 2
 map_Kd petalo_cempasuchil.png
 
-newmtl Talavera_Florero
+newmtl Porcelana_Florero
 Ns 562.500000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -39,7 +39,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 2
-map_Kd talavera_florero.png
+map_Kd porcelana_florero.png
 
 newmtl Tallo_Verde
 Ns 159.999985
