@@ -55,9 +55,9 @@ Proyecto-BLENDER/
 | 1 | **Tumba** | Base de piedra con lápida en la cabecera. Es el soporte de la ofrenda y da el contexto del cementerio. | Subido y texturizado (Sebastian) |
 | 2 | **Niveles de la ofrenda** | Escalones cubiertos con mantel que organizan los elementos; cada nivel tiene un significado simbólico. | Subido y texturizado (Melissa) |
 | 3 | **Veladora** | La luz que guía a las almas en su camino. En la escena es la principal fuente de luz dinámica. | Subido y texturizado (Melissa) |
-| 4 | **Calaverita de azúcar** | Dulce tradicional que representa a los difuntos; suele llevar el nombre de la persona recordada. | Subido y texturizado |
+| 4 | **Calaverita de azúcar** | Dulce tradicional que representa a los difuntos; suele llevar el nombre de la persona recordada. | Subido, texturizado y con topología en quads |
 | 5 | **Pan de muerto** | Pan dulce con "huesitos" cruzados y una bolita al centro que representa el cráneo. | Subido y texturizado (Sebastian) |
-| 6 | **Flores de cempasúchil** | La flor emblemática del Día de Muertos; su color y aroma marcan el camino de regreso de los difuntos. | Subido y texturizado |
+| 6 | **Flores de cempasúchil** | La flor emblemática del Día de Muertos; su color y aroma marcan el camino de regreso de los difuntos. | Subido, texturizado y con topología en quads |
 | 7 | **Portarretratos** | Marcos con las fotografías de los seres queridos a quienes se dedica la ofrenda. | Subido y texturizado |
 | 8 | **Copalero** | Sahumerio de barro donde se quema el copal; su humo purifica el espacio y guía a las almas. | Subido y texturizado (Melissa) |
 | 9 | **Papel picado** | Banderitas de papel recortado con figuras tradicionales que adornan el panteón. | Subido con sus texturas (Sebastian) |
