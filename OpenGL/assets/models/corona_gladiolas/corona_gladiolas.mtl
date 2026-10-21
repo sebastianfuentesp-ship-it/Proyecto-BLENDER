@@ -11,25 +11,15 @@ d 1.000000
 illum 2
 map_Kd follaje.png
 
-newmtl Gladiola_Blanca
-Ns 10.000005
+newmtl Hoja_Verde_Oscuro
+Ns 159.999985
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 2
-map_Kd gladiola_blanca.png
-
-newmtl Gladiola_Roja
-Ns 10.000005
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 2
-map_Kd gladiola_roja.png
+map_Kd hoja_verde_oscuro.png
 
 newmtl Madera_Tripie
 Ns 39.999996
@@ -40,3 +30,23 @@ Ni 1.500000
 d 1.000000
 illum 2
 map_Kd madera_tripie.png
+
+newmtl Petalo_Blanco
+Ns 10.000005
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd petalo_blanco.png
+
+newmtl Petalo_Rojo
+Ns 10.000005
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd petalo_rojo.png
