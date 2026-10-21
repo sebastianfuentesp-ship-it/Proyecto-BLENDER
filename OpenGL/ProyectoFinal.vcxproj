@@ -14,12 +14,14 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Animacion.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\anim.vs" />
     <None Include="shaders\lamp.frag" />
     <None Include="shaders\lamp.vs" />
     <None Include="shaders\lighting.frag" />

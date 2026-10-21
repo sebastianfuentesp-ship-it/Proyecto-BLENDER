@@ -34,7 +34,7 @@ Este repositorio contiene los **modelos 3D hechos en Blender**, sus texturas, lo
 | Acomodo de la escena (`Escena/`) | Listo con los modelos de todo el equipo, terrazas y decoración variada |
 | Carga de modelos y texturas en OpenGL (`OpenGL/`) | Listo |
 | Iluminación: Phong y Fresnel, luces que se prenden y apagan con el teclado | Listo, entrega del 27 de octubre |
-| Animaciones (por código, por keyframes y por input) | Pendiente |
+| Animaciones: 3 de huesos y 3 por objetos hechas en Blender, 3 por código, las 9 con teclado | Listo, entrega del 5 de noviembre |
 
 ## Estructura del repositorio
 
@@ -88,7 +88,7 @@ Están en `Modelos/Yasser/` y `Modelos/Yasser/modelos_cargados/`, todos texturiz
 | Guirnalda de cempasúchil | `cempasuchil.blend` (cadenas de flores) | Sobre cada tumba y en el altar |
 | Pétalos del camino | `petalos_camino.blend` | Pétalos sobre el camino |
 | Terrazas de tierra | `terrazas.blend` | Dos escalones de tierra con muros de piedra a cada lado del camino, con escaleras |
-| Tapete de flores | `extras.blend` | Tapete de pétalos con una calavera, frente al altar y en algunas tumbas (9) |
+| Tapete de flores | `extras.blend` | Tapete de pétalos con una calavera |
 | Florero blanco | `florero.blend` | Florero de porcelana blanca con un ramo de cempasúchil, en las tumbas (42) |
 | Angelito | `angelito.blend` | Estatua chica de ángel sobre pedestal, en tumbas y sueltos (12) |
 | Cruz de piedra | `cruz_tumba.blend` | Tumbas sencillas con cruz (12) |
@@ -96,7 +96,11 @@ Están en `Modelos/Yasser/` y `Modelos/Yasser/modelos_cargados/`, todos texturiz
 | Coronas de flores | `corona_flores.blend`, `corona_corazon.blend`, `corona_cruz.blend`, `corona_blanca.blend`, `corona_lagrima.blend`, `corona_gladiolas.blend`, `corona_banda.blend`, `corona_amarilla.blend` | Ocho coronas en tripié como las de funeraria, junto a las tumbas: redonda, de corazón, en cruz, blanca con listón, de lágrima con listón morado "Descanse en paz", de gladiolas, roja y blanca con banda y amarilla con listón "Con cariño" |
 | Tapetes de flores | `tapete_cruz.blend`, `tapete_corazon.blend`, `tapete_sol.blend`, `tapete_franjas.blend`, `tapete_calavera.blend`, `tapete_mariposa.blend`, `tapete_vela.blend` | Siete diseños más de tapete (cruz, corazón, sol, franjas, calavera, mariposa monarca y vela), en el camino y en las tumbas |
 | Tumbas nuevas | `mausoleo.blend`, `tumba_tierra.blend`, `tumba_azulejo.blend` | Mausoleo familiar con techo de teja, tumba de tierra con cruz de madera y tumba de azulejo con lápida |
-| Personas | `persona_hombre.blend`, `persona_mujer.blend`, `persona_nino.blend`, `persona_nina.blend` | Hombre, mujer, niño y niña modelados en quads y separados por partes para animarlos (cabeza, torso, brazos, muslos y piernas desde la rodilla, cada una con su origen en la articulación). Cada uno tiene tres variantes de ropa, piel y cabello, repetidas en toda la escena (125 personas) |
+| Personas | `persona_hombre.blend`, `persona_mujer.blend`, `persona_nino.blend`, `persona_nina.blend` | Hombre, mujer, niño y niña modelados en quads y separados por partes para animarlos (cabeza, torso, brazos, muslos y piernas desde la rodilla, cada una con su origen en la articulación). Cada uno tiene tres variantes de ropa, piel y cabello, repetidas en toda la escena (unas 110 personas). La cara tiene topología de cara en quads: loops alrededor de ojos y boca, nariz y orejas extruidas y globos de los ojos |
+
+| Banda de viento | `banda.blend` | Siete músicos con uniforme (camisa vino, chaleco negro bordado, moño y sombrero): tuba (sousáfono), tambora con platillos, tarola, dos trompetas, clarinete y trombón de vara. Todo en quads y separado por partes para animarlo |
+| Animaciones de huesos | `anim_caminar.blend`, `anim_rezar.blend`, `anim_abrazar.blend` | Una persona con esqueleto (cadera, torso, cabeza, brazos, antebrazos, muslos y piernas) en cada archivo: un hombre que camina, una señora que se hinca a rezar y un niño que se hinca a abrazar una lápida |
+| Animaciones por objetos | `reja_animada.blend`, `mariposas.blend`, `humo_copal.blend` | Keyframes de objetos: las hojas de la reja que se abren, tres mariposas monarca que vuelan alrededor del altar y el humo de los dos copaleros |
 
 ## Texturas
 

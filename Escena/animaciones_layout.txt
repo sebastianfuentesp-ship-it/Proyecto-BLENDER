@@ -1,0 +1,5 @@
+# Animaciones fijas en la escena (huesos y por codigo): nombre  x y z  rotY(grados)  (coordenadas de OpenGL)
+anim_abrazar 2.467 0.000 3.636 83.2
+anim_rezar -2.384 0.000 -1.128 266.8
+nino_saluda -0.350 0.000 1.450 0.0
+banda -3.050 0.000 6.800 90.0

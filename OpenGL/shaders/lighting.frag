@@ -62,6 +62,7 @@ uniform DirLight dirLight;
 uniform PointLight pointLights[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform Material material;
+uniform int suave;    // 1 = transparencia suave (humo), se dibuja con blending
 uniform vec3 tinte;   // color por instancia (tumbas pintadas, velas de color); 1,1,1 = sin cambio
 
 // Fresnel: brillo azulado de la luna en los bordes de los objetos
@@ -90,9 +91,13 @@ void main( )
         norm = -norm;   // flores y petalos se ven por los dos lados
     }
     vec4 texColor = texture( material.diffuse, TexCoords );
-    if ( texColor.a < 0.5 )
+    if ( suave == 0 && texColor.a < 0.5 )
     {
         discard;        // huecos del papel picado
+    }
+    if ( suave == 1 && texColor.a < 0.02 )
+    {
+        discard;        // humo: transparencia suave
     }
     vec3 viewDir = normalize( viewPos - FragPos );
     vec3 albedo = vec3( texColor ) * tinte;
@@ -119,7 +124,7 @@ void main( )
         result = aplicaNiebla( result, FragPos );
     }
 
-    color = vec4( result, 1.0 );
+    color = vec4( result, suave == 1 ? texColor.a : 1.0 );
 }
 
 // Calculates the color when using a directional light.
