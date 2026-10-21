@@ -1,0 +1,6 @@
+# parte pivote_x pivote_y pivote_z padre  (coordenadas de OpenGL: x, y arriba, z = -y de Blender; metros desde el suelo del musico)
+cuerpo 0.0000 0.0000 0.0000 -
+torso 0.0000 0.9200 0.0000 cuerpo
+brazoder -0.1750 1.4300 0.0000 torso
+vara 0.0000 1.4298 0.3619 torso
+# la vara se desliza a lo largo de la direccion 0.0000 -0.3090 0.9511 (OpenGL), de 0 a 0.40 m (mas alla se sale de la vara interior)

@@ -1,0 +1,8 @@
+# id x y z rotY  (OpenGL, metros y grados; relativo al centro de la banda; rotY gira alrededor de +Y)
+trombon -1.7500 0.0000 0.2682 30.98
+trompeta1 -1.1991 0.0000 0.0018 20.65
+tarola -0.6094 0.0000 -0.1616 10.33
+tuba 0.0000 0.0000 -0.2167 -0.00
+tambora 0.6094 0.0000 -0.1616 -10.33
+trompeta2 1.1991 0.0000 0.0018 -20.65
+clarinete 1.7500 0.0000 0.2682 -30.98
