@@ -21,6 +21,46 @@ d 1.000000
 illum 2
 map_Kd cara_nino_morena.png
 
+newmtl Interior_Oscuro
+Ns 10.000005
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd interior_oscuro.png
+
+newmtl Iris_Cafe
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd iris_cafe.png
+
+newmtl Labios_Morena
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd labios_morena.png
+
+newmtl Ojo_Blanco
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ojo_blanco.png
+
 newmtl Pantalon_Cafe
 Ns 10.000005
 Ka 1.000000 1.000000 1.000000
