@@ -16,7 +16,8 @@ La escena tarda unos segundos en cargar al abrir.
 OpenGL/
 ├── ProyectoFinal.slnx / ProyectoFinal.vcxproj
 ├── src/main.cpp          # Carga del layout, luces, skybox y controles
-├── include/              # Código base del laboratorio, Animacion.h (glTF con huesos), SOIL2 y stb_image
+├── include/              # Código base del laboratorio, Animacion.h (animaciones de Blender con huesos), SOIL2 y stb_image
+├── herramientas/         # gltf_a_anim.py: pasa las animaciones de Blender (glTF) a .anim
 ├── shaders/              # lighting (Phong + Fresnel + niebla), anim (huesos y viento), lamp, skybox
 ├── assets/
 │   ├── models/           # Un folder por modelo: .obj, .mtl y texturas
@@ -74,7 +75,7 @@ Cada animación se prende y se apaga con una tecla (del 1 al 9).
 | 8 | Un niño junto al altar saluda con la mano | Código | Máquina de estados: sube el brazo, mueve el antebrazo de lado a lado y baja el brazo al apagarla |
 | 9 | El viento mueve el papel picado | Código | En el vertex shader (`anim.vs`) las tiras se mecen con senos; los postes no se mueven |
 
-Las animaciones de Blender están en `assets/models/animaciones/` como glTF (`.gltf` + `.bin` + texturas) y se cargan con assimp en `include/Animacion.h`. Para las de huesos, `Animacion.h` calcula en cada cuadro la matriz de cada hueso a partir de los keyframes (interpola posición, rotación con slerp y escala) y `shaders/anim.vs` mueve cada vértice con la suma de sus huesos según su peso. `anim.vs` se usa con el mismo `lighting.frag`, así que las animaciones tienen la misma iluminación que el resto. La banda está en `assets/models/banda/`, un folder por músico con sus partes y su `pivotes.txt`.
+Las animaciones de Blender están en `assets/models/animaciones/` exportadas como glTF (`.gltf` + `.bin` + texturas). El assimp del proyecto es viejo y no lee el glTF de Blender 5, así que `herramientas/gltf_a_anim.py` (Python con numpy) convierte cada uno a un `.anim` de texto, y `include/Animacion.h` lee ese `.anim` sin assimp. Si se vuelve a exportar una animación desde Blender, hay que correr `python gltf_a_anim.py ruta/al/archivo.gltf` para regenerar su `.anim`. Para las de huesos, `Animacion.h` calcula en cada cuadro la matriz de cada hueso a partir de los keyframes (interpola posición, rotación con slerp y escala) y `shaders/anim.vs` mueve cada vértice con la suma de sus huesos según su peso. `anim.vs` se usa con el mismo `lighting.frag`, así que las animaciones tienen la misma iluminación que el resto. La banda está en `assets/models/banda/`, un folder por músico con sus partes y su `pivotes.txt`.
 
 ## Controles
 

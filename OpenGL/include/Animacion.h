@@ -1,15 +1,25 @@
 #pragma once
 
-// Modelos animados hechos en Blender y exportados a glTF (.gltf + .bin + texturas), cargados con assimp.
-// Sirve para las dos clases de animacion que salen de Blender:
+// Modelos animados hechos en Blender. Blender los exporta a glTF (.gltf + .bin + texturas) y
+// herramientas/gltf_a_anim.py los pasa a un .anim de texto que se lee aqui sin assimp (el assimp del proyecto
+// es viejo y no lee el glTF de Blender 5). Sirve para las dos clases de animacion que salen de Blender:
 //  - de huesos (esqueleto + pesos por vertice): se calcula la matriz de cada hueso y el vertex shader
 //    (shaders/anim.vs) mueve cada vertice con la suma de sus huesos ("skinning").
 //  - por objetos (keyframes de posicion, rotacion y escala de cada objeto): cada malla se dibuja con la
 //    matriz de su nodo, que cambia con el tiempo (reja, mariposas, humo).
+//
+// Formato del .anim (todo en texto, matrices de 16 numeros por columnas como glm):
+//   nodos N      / nodo nombre padre matriz_local
+//   huesos B     / hueso nodo matriz_offset
+//   mallas M     / malla nodo piel textura nVertices nIndices, luego un renglon por vertice
+//                  (x y z  nx ny nz  u v  4 huesos  4 pesos) y un renglon por triangulo
+//   duracion d
+//   canales C    / canal nodo, luego pos n, rot n (w x y z) y esc n con un renglon "tiempo valores" por llave
 
 #include <string>
 #include <vector>
 #include <map>
+#include <fstream>
 #include <iostream>
 
 #include <GL/glew.h>
@@ -17,9 +27,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 #include "Shader.h"
 
@@ -30,61 +37,85 @@ const int MAX_HUESOS = 40;
 class ModeloAnimado
 {
 public:
-	// segundos: lo que dura la animacion en Blender (sirve para no depender de la unidad de tiempo del glTF)
+	// ruta: el .gltf o el .anim (se lee el .anim de la misma carpeta)
+	// segundos: lo que dura la animacion en Blender
 	ModeloAnimado(const std::string &ruta, float segundos)
 	{
 		this->segundos = segundos;
-		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(ruta, aiProcess_Triangulate | aiProcess_LimitBoneWeights | aiProcess_GenSmoothNormals);
-		if (!scene || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !scene->mRootNode)
+		std::string archivo = ruta.substr(0, ruta.find_last_of('.')) + ".anim";
+		this->directorio = ruta.substr(0, ruta.find_last_of('/'));
+		std::ifstream f(archivo);
+		std::string palabra;
+		int n = 0;
+		if (!f || !(f >> palabra) || palabra != "ANIM")
 		{
-			std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
+			std::cout << "ERROR::ANIMACION:: no se pudo leer " << archivo << std::endl;
 			return;
 		}
-		this->directorio = ruta.substr(0, ruta.find_last_of('/'));
-		this->CargaNodos(scene->mRootNode, -1);
-		for (unsigned i = 0; i < scene->mNumMeshes; i++)
+		f >> palabra;   // version
+		f >> palabra >> n;   // nodos
+		for (int i = 0; i < n; i++)
 		{
-			this->CargaMalla(scene->mMeshes[i], scene, i);
+			Nodo nd;
+			f >> palabra >> nd.nombre >> nd.padre;
+			LeeMat(f, nd.local);
+			nd.canal = -1;
+			this->indiceNodo[nd.nombre] = i;
+			this->nodos.push_back(nd);
 		}
-		// Blender exporta una animacion por objeto animado (reja: una por hoja; mariposas: una por mariposa y ala),
-		// asi que se juntan los canales de todas; todas empiezan y terminan juntas
-		for (unsigned an = 0; an < scene->mNumAnimations; an++)
+		f >> palabra >> n;   // huesos
+		for (int b = 0; b < n; b++)
 		{
-			aiAnimation *a = scene->mAnimations[an];
-			this->duracion = glm::max(this->duracion, (float)a->mDuration);
-			for (unsigned c = 0; c < a->mNumChannels; c++)
+			int nodo;
+			glm::mat4 m;
+			f >> palabra >> nodo;
+			LeeMat(f, m);
+			this->huesoNodo.push_back(nodo);
+			this->offset.push_back(m);
+		}
+		f >> palabra >> n;   // mallas
+		for (int i = 0; i < n; i++)
+		{
+			this->CargaMalla(f);
+		}
+		f >> palabra >> this->duracion;
+		f >> palabra >> n;   // canales
+		for (int c = 0; c < n; c++)
+		{
+			int nodo, k;
+			Canal ch;
+			f >> palabra >> nodo;
+			f >> palabra >> k;
+			for (int j = 0; j < k; j++)
 			{
-				aiNodeAnim *ch = a->mChannels[c];
-				auto it = this->indiceNodo.find(ch->mNodeName.C_Str());
-				if (it == this->indiceNodo.end())
-				{
-					continue;
-				}
-				Canal k;
-				for (unsigned j = 0; j < ch->mNumPositionKeys; j++)
-				{
-					aiVector3D v = ch->mPositionKeys[j].mValue;
-					k.tp.push_back((float)ch->mPositionKeys[j].mTime); k.pos.push_back(glm::vec3(v.x, v.y, v.z));
-				}
-				for (unsigned j = 0; j < ch->mNumRotationKeys; j++)
-				{
-					aiQuaternion q = ch->mRotationKeys[j].mValue;
-					k.tr.push_back((float)ch->mRotationKeys[j].mTime); k.rot.push_back(glm::quat(q.w, q.x, q.y, q.z));
-				}
-				for (unsigned j = 0; j < ch->mNumScalingKeys; j++)
-				{
-					aiVector3D v = ch->mScalingKeys[j].mValue;
-					k.te.push_back((float)ch->mScalingKeys[j].mTime); k.esc.push_back(glm::vec3(v.x, v.y, v.z));
-				}
-				this->nodos[it->second].canal = (int)this->canales.size();
-				this->canales.push_back(k);
+				glm::vec3 v; float t;
+				f >> t >> v.x >> v.y >> v.z;
+				ch.tp.push_back(t); ch.pos.push_back(v);
+			}
+			f >> palabra >> k;
+			for (int j = 0; j < k; j++)
+			{
+				glm::quat q; float t;
+				f >> t >> q.w >> q.x >> q.y >> q.z;
+				ch.tr.push_back(t); ch.rot.push_back(q);
+			}
+			f >> palabra >> k;
+			for (int j = 0; j < k; j++)
+			{
+				glm::vec3 v; float t;
+				f >> t >> v.x >> v.y >> v.z;
+				ch.te.push_back(t); ch.esc.push_back(v);
+			}
+			if (nodo >= 0 && nodo < (int)this->nodos.size())
+			{
+				this->nodos[nodo].canal = (int)this->canales.size();
+				this->canales.push_back(ch);
 			}
 		}
 		this->global.assign(this->nodos.size(), glm::mat4(1.0f));
 		this->huesos.assign(MAX_HUESOS, glm::mat4(1.0f));
 		this->Pose(0.0f);
-		std::cout << "Animacion " << ruta << ": " << this->mallas.size() << " mallas, " << this->offset.size() << " huesos, "
+		std::cout << "Animacion " << archivo << ": " << this->mallas.size() << " mallas, " << this->offset.size() << " huesos, "
 			<< this->canales.size() << " canales" << std::endl;
 	}
 
@@ -178,7 +209,6 @@ private:
 	std::map<std::string, int> indiceNodo;
 	std::vector<glm::mat4> global;
 	std::vector<Malla> mallas;
-	std::map<std::string, int> indiceHueso;
 	std::vector<int> huesoNodo;
 	std::vector<glm::mat4> offset;
 	std::vector<glm::mat4> huesos;
@@ -187,9 +217,14 @@ private:
 	float duracion = 0.0f;
 	float segundos = 1.0f;
 
-	static glm::mat4 Mat(const aiMatrix4x4 &m)
+	static void LeeMat(std::ifstream &f, glm::mat4 &m)
 	{
-		return glm::transpose(glm::make_mat4(&m.a1));   // assimp guarda por renglones, glm por columnas
+		float v[16];
+		for (int i = 0; i < 16; i++)
+		{
+			f >> v[i];
+		}
+		m = glm::make_mat4(v);   // el .anim ya viene por columnas, como glm
 	}
 
 	static int Llave(const std::vector<float> &t, float x)
@@ -218,95 +253,35 @@ private:
 		return glm::normalize(glm::slerp(v[i], v[i + 1], f));
 	}
 
-	void CargaNodos(aiNode *n, int padre)
+	void CargaMalla(std::ifstream &f)
 	{
-		int i = (int)this->nodos.size();
-		this->nodos.push_back({ n->mName.C_Str(), Mat(n->mTransformation), padre, -1 });
-		this->indiceNodo[n->mName.C_Str()] = i;
-		for (unsigned c = 0; c < n->mNumChildren; c++)
-		{
-			this->CargaNodos(n->mChildren[c], i);
-		}
-	}
-
-	int NodoDeMalla(aiNode *n, unsigned malla)
-	{
-		for (unsigned k = 0; k < n->mNumMeshes; k++)
-		{
-			if (n->mMeshes[k] == malla) return this->indiceNodo[n->mName.C_Str()];
-		}
-		for (unsigned c = 0; c < n->mNumChildren; c++)
-		{
-			int r = this->NodoDeMalla(n->mChildren[c], malla);
-			if (r >= 0) return r;
-		}
-		return -1;
-	}
-
-	void CargaMalla(aiMesh *mesh, const aiScene *scene, unsigned indice)
-	{
-		std::vector<Vertice> vs(mesh->mNumVertices);
-		for (unsigned i = 0; i < mesh->mNumVertices; i++)
-		{
-			Vertice &v = vs[i];
-			v.Position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-			v.Normal = mesh->mNormals ? glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : glm::vec3(0, 1, 0);
-			v.TexCoords = mesh->mTextureCoords[0] ? glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : glm::vec2(0.0f);
-			for (int k = 0; k < 4; k++)
-			{
-				v.ids[k] = 0; v.pesos[k] = 0.0f;
-			}
-		}
-		// pesos de los huesos: cada vertice guarda hasta 4 huesos
-		for (unsigned b = 0; b < mesh->mNumBones; b++)
-		{
-			aiBone *bone = mesh->mBones[b];
-			std::string nombre = bone->mName.C_Str();
-			if (this->indiceHueso.find(nombre) == this->indiceHueso.end())
-			{
-				this->indiceHueso[nombre] = (int)this->offset.size();
-				this->offset.push_back(Mat(bone->mOffsetMatrix));
-				this->huesoNodo.push_back(this->indiceNodo.count(nombre) ? this->indiceNodo[nombre] : 0);
-			}
-			int id = this->indiceHueso[nombre];
-			for (unsigned w = 0; w < bone->mNumWeights; w++)
-			{
-				Vertice &v = vs[bone->mWeights[w].mVertexId];
-				for (int k = 0; k < 4; k++)
-				{
-					if (v.pesos[k] == 0.0f)
-					{
-						v.ids[k] = id; v.pesos[k] = bone->mWeights[w].mWeight;
-						break;
-					}
-				}
-			}
-		}
-		std::vector<GLuint> idx;
-		for (unsigned f = 0; f < mesh->mNumFaces; f++)
-		{
-			for (unsigned k = 0; k < mesh->mFaces[f].mNumIndices; k++)
-			{
-				idx.push_back(mesh->mFaces[f].mIndices[k]);
-			}
-		}
-
+		std::string palabra, tex;
 		Malla m;
-		m.n = (GLsizei)idx.size();
-		m.piel = mesh->mNumBones > 0;
-		m.nodo = this->NodoDeMalla(scene->mRootNode, indice);
-		if (m.nodo < 0) m.nodo = 0;
-		m.textura = 0;
-		aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-		aiString tex;
-		if (mat->GetTextureCount(aiTextureType_DIFFUSE) > 0 && mat->GetTexture(aiTextureType_DIFFUSE, 0, &tex) == AI_SUCCESS)
+		int nv, ni, piel;
+		f >> palabra >> m.nodo >> piel >> tex >> nv >> ni;
+		m.piel = piel == 1;
+		std::vector<Vertice> vs(nv);
+		for (auto &v : vs)
 		{
-			std::string t = tex.C_Str();
-			if (this->texturas.find(t) == this->texturas.end())
+			f >> v.Position.x >> v.Position.y >> v.Position.z >> v.Normal.x >> v.Normal.y >> v.Normal.z
+				>> v.TexCoords.x >> v.TexCoords.y >> v.ids[0] >> v.ids[1] >> v.ids[2] >> v.ids[3]
+				>> v.pesos[0] >> v.pesos[1] >> v.pesos[2] >> v.pesos[3];
+		}
+		std::vector<GLuint> idx(ni);
+		for (auto &i : idx)
+		{
+			f >> i;
+		}
+		m.n = (GLsizei)idx.size();
+		if (m.nodo < 0 || m.nodo >= (int)this->nodos.size()) m.nodo = 0;
+		m.textura = 0;
+		if (tex != "-")
+		{
+			if (this->texturas.find(tex) == this->texturas.end())
 			{
-				this->texturas[t] = TextureFromFile(t.c_str(), this->directorio);
+				this->texturas[tex] = TextureFromFile(tex.c_str(), this->directorio);
 			}
-			m.textura = this->texturas[t];
+			m.textura = this->texturas[tex];
 		}
 
 		glGenVertexArrays(1, &m.VAO);

@@ -418,12 +418,12 @@ int main()
 	std::cout << velas.size() << " velas en la escena" << std::endl;
 
 	// ---------------- animaciones ----------------
-	ModeloAnimado caminar("assets/models/animaciones/anim_caminar/anim_caminar.gltf", 1.0f);
-	ModeloAnimado rezar("assets/models/animaciones/anim_rezar/anim_rezar.gltf", 8.0f);
-	ModeloAnimado abrazar("assets/models/animaciones/anim_abrazar/anim_abrazar.gltf", 8.0f);
-	ModeloAnimado reja("assets/models/animaciones/reja_animada/reja_animada.gltf", 4.0f);
-	ModeloAnimado mariposas("assets/models/animaciones/mariposas/mariposas.gltf", 8.0f);
-	ModeloAnimado humo("assets/models/animaciones/humo_copal/humo_copal.gltf", 4.0f);
+	ModeloAnimado caminar("assets/models/animaciones/anim_caminar/anim_caminar.anim", 1.0f);
+	ModeloAnimado rezar("assets/models/animaciones/anim_rezar/anim_rezar.anim", 8.0f);
+	ModeloAnimado abrazar("assets/models/animaciones/anim_abrazar/anim_abrazar.anim", 8.0f);
+	ModeloAnimado reja("assets/models/animaciones/reja_animada/reja_animada.anim", 4.0f);
+	ModeloAnimado mariposas("assets/models/animaciones/mariposas/mariposas.anim", 8.0f);
+	ModeloAnimado humo("assets/models/animaciones/humo_copal/humo_copal.anim", 4.0f);
 
 	// Donde quedan la senora que reza y el nino que abraza la tumba (Escena/animaciones_layout.txt)
 	glm::mat4 lugarRezo(1.0f), lugarAbrazo(1.0f), lugarSaludo(1.0f), lugarBanda(1.0f);
