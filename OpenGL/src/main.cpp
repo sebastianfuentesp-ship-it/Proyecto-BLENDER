@@ -114,6 +114,7 @@ struct Dibujo
 {
 	Model *modelo;
 	Model *lod;          // assets/models/<m>/<m>_lod.obj si existe (se usa de lejos)
+	Model *medio;        // assets/models/<m>/<m>_medio.obj si existe (distancia media, p. ej. las personas)
 	glm::mat4 model;
 	glm::vec3 centro;    // centro de la esfera envolvente en el mundo
 	float radio;
@@ -123,6 +124,7 @@ struct Dibujo
 // Optimizacion: solo se dibuja lo que esta dentro de la vista, lo chico y lejano se oculta en la niebla
 // y lo que esta lejos se dibuja con su version ligera.
 const float DIST_LOD = 11.0f;      // metros: a partir de aqui se usa el LOD
+const float DIST_MEDIO = 4.0f;     // metros: a partir de aqui se usa la version media (si existe)
 const float DIST_NIEBLA = 40.0f;   // con niebla, lo chico (radio < 1.5 m) mas lejos que esto no se ve
 const float DIST_SIN_NIEBLA = 90.0f;
 
@@ -371,6 +373,7 @@ int main()
 	std::vector<Instancia> layout = CargaLayout("assets/escena_layout.txt");
 	std::map<std::string, Model*> modelos;
 	std::map<std::string, Model*> lods;
+	std::map<std::string, Model*> medios;
 
 	for (auto &i : layout)
 	{
@@ -381,6 +384,8 @@ int main()
 			modelos[i.modelo] = new Model((char*)ruta.c_str());
 			std::string rutaLod = "assets/models/" + i.modelo + "/" + i.modelo + "_lod.obj";
 			lods[i.modelo] = std::ifstream(rutaLod).good() ? new Model((char*)rutaLod.c_str()) : nullptr;
+			std::string rutaMedio = "assets/models/" + i.modelo + "/" + i.modelo + "_medio.obj";
+			medios[i.modelo] = std::ifstream(rutaMedio).good() ? new Model((char*)rutaMedio.c_str()) : nullptr;
 		}
 	}
 
@@ -395,6 +400,7 @@ int main()
 		Dibujo d;
 		d.modelo = modelos[i.modelo];
 		d.lod = lods[i.modelo];
+		d.medio = medios[i.modelo];
 		d.model = MatrizModelo(i);
 		d.centro = glm::vec3(d.model * glm::vec4(d.modelo->Centro(), 1.0f));
 		d.radio = d.modelo->Radio() * i.escala;
@@ -668,7 +674,15 @@ int main()
 
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(d.model));
 			glUniform3f(tinteLoc, d.tinte.r, d.tinte.g, d.tinte.b);
-			Model *m = (d.lod != nullptr && dist > DIST_LOD) ? d.lod : d.modelo;
+			Model *m = d.modelo;
+			if (d.lod != nullptr && dist > DIST_LOD)
+			{
+				m = d.lod;
+			}
+			else if (d.medio != nullptr && dist > DIST_MEDIO)
+			{
+				m = d.medio;
+			}
 			m->Draw(lightingShader);
 		}
 		glBindVertexArray(0);
@@ -790,6 +804,10 @@ int main()
 		delete m.second;
 	}
 	for (auto &m : lods)
+	{
+		delete m.second;
+	}
+	for (auto &m : medios)
 	{
 		delete m.second;
 	}

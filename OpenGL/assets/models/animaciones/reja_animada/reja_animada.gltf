@@ -20,12 +20,7 @@
 		},
 		{
 			"mesh":1,
-			"name":"Reja_Hoja_Der",
-			"translation":[
-				-1.7599999904632568,
-				0,
-				-10
-			]
+			"name":"Reja_Hoja_Der"
 		},
 		{
 			"children":[
@@ -105,9 +100,6 @@
 			"doubleSided":true,
 			"name":"Hiedra",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":0
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.75
 			}
@@ -116,9 +108,6 @@
 			"doubleSided":true,
 			"name":"Hierro_Forjado",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":1
-				},
 				"metallicFactor":0.800000011920929,
 				"roughnessFactor":0.550000011920929
 			}
@@ -126,7 +115,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Hiedra_Hoja_Der",
+			"name":"Hiedra_Hoja_Der.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -140,7 +129,7 @@
 			]
 		},
 		{
-			"name":"Reja_Hoja_Der",
+			"name":"Reja_Hoja_Der.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -154,7 +143,7 @@
 			]
 		},
 		{
-			"name":"Hiedra_Hoja_Izq",
+			"name":"Hiedra_Hoja_Izq.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -168,7 +157,7 @@
 			]
 		},
 		{
-			"name":"Reja_Hoja_Izq",
+			"name":"Reja_Hoja_Izq.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -182,42 +171,20 @@
 			]
 		}
 	],
-	"textures":[
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":1
-		}
-	],
-	"images":[
-		{
-			"mimeType":"image/png",
-			"name":"hiedra",
-			"uri":"hiedra.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"hierro_forjado",
-			"uri":"hierro_forjado.png"
-		}
-	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
 			"count":1688,
 			"max":[
-				2.067471981048584,
+				0.30747199058532715,
 				2.377866744995117,
-				10.202804565429688
+				0.2028045654296875
 			],
 			"min":[
-				-0.2188180685043335,
+				-1.9788180589675903,
 				0.20008116960525513,
-				9.78659439086914
+				-0.21340560913085938
 			],
 			"type":"VEC3"
 		},
@@ -278,14 +245,14 @@
 			"componentType":5126,
 			"count":1958,
 			"max":[
-				0.47926080226898193,
+				2.239260673522949,
 				2.822094202041626,
-				10.222930908203125
+				0.222930908203125
 			],
 			"min":[
-				-2.23032808303833,
+				-0.47032809257507324,
 				0.22527991235256195,
-				9.80422592163086
+				-0.19577407836914062
 			],
 			"type":"VEC3"
 		},
@@ -477,12 +444,6 @@
 			"buffer":0,
 			"byteLength":1552,
 			"byteOffset":545448
-		}
-	],
-	"samplers":[
-		{
-			"magFilter":9729,
-			"minFilter":9987
 		}
 	],
 	"buffers":[
