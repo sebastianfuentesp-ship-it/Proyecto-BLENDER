@@ -21,6 +21,16 @@ d 1.000000
 illum 2
 map_Kd cara_hombre_media.png
 
+newmtl Cinturon_Cuero
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd cinturon_cuero.png
+
 newmtl Interior_Oscuro
 Ns 10.000005
 Ka 1.000000 1.000000 1.000000
@@ -80,6 +90,16 @@ Ni 1.500000
 d 1.000000
 illum 2
 map_Kd pelo_negro.png
+
+newmtl Pestanas
+Ns 10.000005
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd pestanas.png
 
 newmtl Piel_Media
 Ns 90.000000
